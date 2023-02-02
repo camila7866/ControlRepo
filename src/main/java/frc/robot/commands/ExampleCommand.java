@@ -23,13 +23,11 @@ public class ExampleCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.talon.setSelectedSensorPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.RunPosition();
   }
 
   // Called once the command ends or is interrupted.
