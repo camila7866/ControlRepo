@@ -2,15 +2,17 @@ package frc.robot.commands;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class TeleopDrive extends CommandBase {
-  private final Drive m_subsystem;
+  private final Drive m_Drive;
   private boolean m_isFieldCentric;
 
   public TeleopDrive(Drive subsystem, boolean isFieldCentric) {
-    m_subsystem = subsystem;
+    m_Drive = subsystem;
     m_isFieldCentric = isFieldCentric; 
     addRequirements(subsystem);
   }
@@ -33,29 +35,11 @@ public class TeleopDrive extends CommandBase {
     if (x_right >= -0.2 && x_right <= 0.2){
       x_right = 0;
     }
-    m_subsystem.givePower(
-      //dDer
-      y_left - x_left - x_right,
-      //dIzq
-      y_left + x_left + x_right,
-      //tDer
-      y_left + x_left -x_right,
-      //tIzq 
-      y_left - x_left + x_right
-    );
-    /*
-     else {
-       double heading = m_subsystem.gyro.getRotation2d().getRadians();
-       double rotx = x_left * Math.cos(heading) - y_left * Math.sin(heading);
-       Double roty = x_left * Math.sin(heading) + y_left * Math.cos(heading);
-       double d = Math.max(Math.abs(roty) + Math.abs(rotx) + Math.abs(x_right), 1);
-       m_subsystem.givePower(
-       (roty - rotx - x_right)/d,
-       (roty + rotx + x_right)/d,
-       (roty + rotx -x_right)/d, 
-       (roty - rotx + x_right)/d);
-     }
-     */
+    x_right = x_right * 0.75;
+    m_Drive.dDer.set(ControlMode.PercentOutput, y_left - x_left - x_right);
+    m_Drive.dIzq.set(ControlMode.PercentOutput, y_left + x_left + x_right);
+    m_Drive.tDer.set(ControlMode.PercentOutput, y_left + x_left - x_right);
+    m_Drive.tIzq.set(ControlMode.PercentOutput, y_left - x_left + x_right);
   }
 
   @Override
