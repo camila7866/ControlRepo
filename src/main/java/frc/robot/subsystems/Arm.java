@@ -6,16 +6,15 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Elevator extends SubsystemBase {
-  public CANSparkMax elevator = new CANSparkMax(5, MotorType.kBrushless);
-  public Elevator() {
-    SparkMaxLimitSwitch limit =elevator.getForwardLimitSwitch(Type.kNormallyOpen);
-    limit.enableLimitSwitch(true); 
+public class Arm extends SubsystemBase {
+  public CANSparkMax arm = new CANSparkMax(4, MotorType.kBrushless);
+  public Arm() {
+    arm.setIdleMode(IdleMode.kBrake);
   }
 
   @Override

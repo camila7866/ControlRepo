@@ -8,10 +8,10 @@ import frc.robot.subsystems.Drive;
 public class Auto1 extends CommandBase {
   private final Drive m_Drive;
   private ProfiledPIDController pidController = new ProfiledPIDController(
-    0.002, 
+    0.005, 
     0, 
     0, 
-    new TrapezoidProfile.Constraints(5000, 1000));
+    new TrapezoidProfile.Constraints(3000, 1500));
   private boolean m_isLateral;
   public Auto1(Drive drive, double goal, boolean isLateral) {
     m_isLateral = isLateral;
@@ -39,7 +39,7 @@ public class Auto1 extends CommandBase {
     if (m_isLateral){
       m_Drive.setToMasters(vel, -vel);
     }
-    else {
+    else { 
       m_Drive.setToMasters(vel, vel);
     }
   }

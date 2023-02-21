@@ -26,20 +26,31 @@ public class TeleopDrive extends CommandBase {
     double x_left = RobotContainer.Control0.getLeftX();
     double y_left = -RobotContainer.Control0.getLeftY();
     double x_right = RobotContainer.Control0.getRightX();
-    if (x_left >= -0.2 && x_left <= 0.2){
-      x_left = 0;
+
+    double power_y, power_x, power_twist;
+    power_twist = x_right * 0.75;
+    if (m_isFieldCentric){
+      double botHeading = m_Drive.getBotHeading();
+      power_y = x_left * Math.sin(botHeading) + y_left * Math.cos(botHeading);
+      power_x = x_left * Math.cos(botHeading) - y_left * Math.sin(botHeading);
     }
-    if (y_left >= -0.2 && y_left <= 0.2){
-      y_left = 0;
+    else {
+      power_y = y_left;
+      power_x = x_left;
     }
-    if (x_right >= -0.2 && x_right <= 0.2){
-      x_right = 0;
+    if (power_x >= -0.2 && power_x <= 0.2){
+      power_x = 0;
     }
-    x_right = x_right * 0.75;
-    m_Drive.dDer.set(ControlMode.PercentOutput, y_left - x_left - x_right);
-    m_Drive.dIzq.set(ControlMode.PercentOutput, y_left + x_left + x_right);
-    m_Drive.tDer.set(ControlMode.PercentOutput, y_left + x_left - x_right);
-    m_Drive.tIzq.set(ControlMode.PercentOutput, y_left - x_left + x_right);
+    if (power_y >= -0.2 && power_y <= 0.2){
+      power_y = 0;
+    }
+    if (power_twist >= -0.2 && power_twist <= 0.2){
+      power_twist = 0;
+    }
+    m_Drive.dDer.set(ControlMode.PercentOutput, power_y - power_x - power_twist);
+    m_Drive.dIzq.set(ControlMode.PercentOutput, power_y + power_x + power_twist);
+    m_Drive.tDer.set(ControlMode.PercentOutput, power_y + power_x - power_twist);
+    m_Drive.tIzq.set(ControlMode.PercentOutput, power_y - power_x + power_twist);
   }
 
   @Override
