@@ -4,27 +4,27 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class AutoBalance extends CommandBase {
+public class DriveGoToAngle extends CommandBase {
   private final Drive m_Drive;
-  private PIDController pidController = new PIDController(0.025, 0, 0);
-  public AutoBalance(Drive _Drive) {
+  private PIDController pidController = new PIDController(0.2, 0, 0);
+  public DriveGoToAngle(Drive _Drive, double target_angle) {
     m_Drive = _Drive;
+    pidController.enableContinuousInput(-180, 180);
+    pidController.setTolerance(5);
+    pidController.setSetpoint(target_angle);
     addRequirements(m_Drive);
   }
-  
+
   @Override
   public void initialize() {
+    pidController.reset();
     m_Drive.followMotorInFront();
-    //Diferencia de maximo 15 grados
-    pidController.setSetpoint(90);
-    pidController.setTolerance(3);
   }
 
   @Override
   public void execute() {
-    double input = m_Drive.getPitch();
-    double output = -pidController.calculate(input); 
-    m_Drive.setToMasters(output, output);
+    double out = pidController.calculate(m_Drive.getBotHeadingDegrees());
+    m_Drive.setToMasters(out, -out);
   }
 
   @Override

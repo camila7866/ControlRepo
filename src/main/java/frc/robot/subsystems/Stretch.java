@@ -9,31 +9,31 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Arm extends SubsystemBase {
-  public final CANSparkMax arm = new CANSparkMax(5, MotorType.kBrushless);
-  private RelativeEncoder enc_arm = arm.getEncoder(); 
-  private SparkMaxPIDController pidController = arm.getPIDController();
-  public Arm() {
-    arm.setIdleMode(IdleMode.kBrake);
-    enc_arm.setPosition(0);
+public class Stretch extends SubsystemBase {
+  public CANSparkMax stretch = new CANSparkMax(4, MotorType.kBrushless);
+  private RelativeEncoder enc_stretch = stretch.getEncoder();
+  private SparkMaxPIDController pidController = stretch.getPIDController();
+  public Stretch() {
+    stretch.setIdleMode(IdleMode.kBrake);
+    ResetEncoder();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Position: ", enc_arm.getPosition());
-    SmartDashboard.putNumber("Arm Applied Output: ", arm.getAppliedOutput());
+    SmartDashboard.putNumber("Stretch Position: ", enc_stretch.getPosition());
+    SmartDashboard.putNumber("Stretch Applied Output: ", stretch.getAppliedOutput());
   }
 
-  public void ArmPower (double vel){
-    arm.set(vel);
+  public void StretchPower (double vel){
+    stretch.set(vel);
   }
   
-  public void ArmPosition (double position){
+  public void StretchPosition (double position){
     pidController.setReference(position, CANSparkMax.ControlType.kSmartMotion);
   }
   
   public void ResetEncoder(){
-    enc_arm.setPosition(0);
+    enc_stretch.setPosition(0);
   }
   
   public void ConfigForPosition(){
@@ -51,7 +51,7 @@ public class Arm extends SubsystemBase {
   
   public boolean IsStopped (){
     boolean value =  false;
-    if (Math.abs(arm.getAppliedOutput()) == 0){
+    if (Math.abs(stretch.getAppliedOutput()) == 0){
       value = true;
     }
     return (value);
