@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
-  public final CANSparkMax arm = new CANSparkMax(5, MotorType.kBrushless);
+  public final CANSparkMax arm = new CANSparkMax(6, MotorType.kBrushless);
   private RelativeEncoder enc_arm = arm.getEncoder(); 
   private SparkMaxPIDController pidController = arm.getPIDController();
   public Arm() {

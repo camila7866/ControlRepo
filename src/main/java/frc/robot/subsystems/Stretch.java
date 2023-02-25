@@ -43,9 +43,9 @@ public class Stretch extends SubsystemBase {
     pidController.setIZone(0);
     pidController.setFF(0.000156);
     pidController.setOutputRange(-1, 1);
-    pidController.setSmartMotionMaxVelocity(2000, 0);
+    pidController.setSmartMotionMaxVelocity(40000, 0);
     pidController.setSmartMotionMinOutputVelocity(0, 0);
-    pidController.setSmartMotionMaxAccel(1500, 0);
+    pidController.setSmartMotionMaxAccel(20000, 0);
     pidController.setSmartMotionAllowedClosedLoopError(2, 0);
   }
   

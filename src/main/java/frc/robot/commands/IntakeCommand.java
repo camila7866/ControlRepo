@@ -20,7 +20,7 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     if (m_IsManual){
-      m_Intake.intake.set(RobotContainer.Control1.getRightTriggerAxis() - RobotContainer.Control1.getLeftTriggerAxis());
+      m_Intake.intake.set(RobotContainer.Control0.getRightTriggerAxis() - RobotContainer.Control0.getLeftTriggerAxis());
     }
     else {
       m_Intake.intake.set(vel_aut);
