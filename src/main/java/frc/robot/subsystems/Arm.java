@@ -15,13 +15,18 @@ public class Arm extends SubsystemBase {
   private SparkMaxPIDController pidController = arm.getPIDController();
   public Arm() {
     arm.setIdleMode(IdleMode.kBrake);
+    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    arm.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
+    arm.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -60);
     enc_arm.setPosition(0);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm Position: ", enc_arm.getPosition());
-    SmartDashboard.putNumber("Arm Applied Output: ", arm.getAppliedOutput());
+    SmartDashboard.putNumber("Arm Output: ", arm.getAppliedOutput());
+    SmartDashboard.putNumber("Arm Vel: ", enc_arm.getVelocity());
   }
 
   public void ArmPower (double vel){
@@ -36,22 +41,22 @@ public class Arm extends SubsystemBase {
     enc_arm.setPosition(0);
   }
   
-  public void ConfigForPosition(){
+  public void ConfigForPosition(double max_accel, double max_vel){
     pidController.setP(0.00005);
     pidController.setI(0.000001);
     pidController.setD(0);
     pidController.setIZone(0);
     pidController.setFF(0.000156);
     pidController.setOutputRange(-1, 1);
-    pidController.setSmartMotionMaxVelocity(2000, 0);
+    pidController.setSmartMotionMaxVelocity(max_vel, 0);
     pidController.setSmartMotionMinOutputVelocity(0, 0);
-    pidController.setSmartMotionMaxAccel(1500, 0);
+    pidController.setSmartMotionMaxAccel(max_accel, 0);
     pidController.setSmartMotionAllowedClosedLoopError(2, 0);
   }
   
-  public boolean IsStopped (){
+  public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(arm.getAppliedOutput()) == 0){
+    if (Math.abs(pos_goal - enc_arm.getPosition()) <= 3){
       value = true;
     }
     return (value);

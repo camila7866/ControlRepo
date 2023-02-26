@@ -23,15 +23,15 @@ public class ElevatorCommand extends CommandBase {
   @Override
   public void execute() {
     if (m_isManual){
-      m_Elevator.ElevatorPower(RobotContainer.Control1.getLeftY());
+      double power = -RobotContainer.Control1.getLeftY();
+      if (Math.abs(power) <= 0.2){
+        power = 0;
+      }
+      m_Elevator.ElevatorPower(power);
     }
     else {
-      if (!m_Elevator.IsStopped()) {
-        m_Elevator.ElevatorPosition(m_pos);
-      }
-      else {
-        flag = true;
-      }
+      flag = m_Elevator.IsStopped(m_pos);
+      m_Elevator.ElevatorPosition(m_pos);
     }
   }
 

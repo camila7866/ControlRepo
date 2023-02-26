@@ -5,33 +5,39 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
 public class ArmCommand extends CommandBase {
-  private final Arm m_Arm;
-  private boolean m_isManual, flag = false;
+  private Arm m_Arm;
+  private boolean m_isManual, flag = false, m_isFullPos;
   private double m_pos;
-  public ArmCommand(Arm _Arm, boolean isManual, double pos) {
+  public ArmCommand(Arm _Arm, boolean isManual, double pos, boolean isFullPos) {
     m_Arm = _Arm;
-    m_isManual = isManual; 
+    m_isManual = isManual;
+    m_isFullPos = isFullPos;
     m_pos = pos;
     addRequirements(m_Arm);
   }
 
   @Override
   public void initialize() {
-    m_Arm.ConfigForPosition();
+    if (m_isFullPos){
+      m_Arm.ConfigForPosition(1200, 1200);
+    }
+    else {
+      m_Arm.ConfigForPosition(1500, 2000); 
+    }
   }
 
   @Override
   public void execute() {
     if (m_isManual){
-      m_Arm.ArmPower(RobotContainer.Control1.getRightY());
+      double power = RobotContainer.Control1.getRightY();
+      if (Math.abs(power) <= 0.2){
+        power = 0;
+      }
+      m_Arm.ArmPower(power);
     }
     else {
-      if (!m_Arm.IsStopped()) {
-        m_Arm.ArmPosition(m_pos);
-      }
-      else {
-        flag = true;
-      }
+      flag = m_Arm.IsStopped(m_pos);
+      m_Arm.ArmPosition(m_pos);
     }
   }
 

@@ -15,13 +15,22 @@ public class Elevator extends SubsystemBase {
   private SparkMaxPIDController pidController = elevator.getPIDController();
   public Elevator() {
     elevator.setIdleMode(IdleMode.kBrake);
+    /*
+    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 95);
+    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+    
+     */
+    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
     enc_elevator.setPosition(0);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Elevator Position: ", enc_elevator.getPosition());
-    SmartDashboard.putNumber("Elevator Applied Output: ", elevator.getAppliedOutput());
+    SmartDashboard.putNumber("Elevator Vel: ", enc_elevator.getVelocity());
   }
 
   public void ElevatorPower (double vel){
@@ -49,9 +58,9 @@ public class Elevator extends SubsystemBase {
     pidController.setSmartMotionAllowedClosedLoopError(2, 0);
   }
   
-  public boolean IsStopped (){
+  public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(elevator.getAppliedOutput()) == 0){
+    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 3){
       value = true;
     }
     return (value);

@@ -17,7 +17,7 @@ public class AutoBalance extends CommandBase {
     m_Drive.followMotorInFront();
     //Diferencia de maximo 15 grados
     pidController.setSetpoint(90);
-    pidController.setTolerance(3);
+    pidController.setTolerance(2);
   }
 
   @Override

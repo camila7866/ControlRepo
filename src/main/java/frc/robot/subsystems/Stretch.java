@@ -15,13 +15,17 @@ public class Stretch extends SubsystemBase {
   private SparkMaxPIDController pidController = stretch.getPIDController();
   public Stretch() {
     stretch.setIdleMode(IdleMode.kBrake);
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
+    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -360);
     ResetEncoder();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Stretch Position: ", enc_stretch.getPosition());
-    SmartDashboard.putNumber("Stretch Applied Output: ", stretch.getAppliedOutput());
+    SmartDashboard.putNumber("Stretch Vel: ", enc_stretch.getVelocity());
   }
 
   public void StretchPower (double vel){
@@ -49,9 +53,9 @@ public class Stretch extends SubsystemBase {
     pidController.setSmartMotionAllowedClosedLoopError(2, 0);
   }
   
-  public boolean IsStopped (){
+  public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(stretch.getAppliedOutput()) == 0){
+    if (Math.abs(pos_goal - enc_stretch.getPosition()) <= 3){
       value = true;
     }
     return (value);
