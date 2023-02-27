@@ -5,9 +5,10 @@ import frc.robot.subsystems.Piston;
 
 public class PistonCommand extends CommandBase {
   private final Piston m_Piston;
-  private boolean flag;
-  public PistonCommand(Piston _Piston) {
+  private boolean flag, m_isWithoutToggle;
+  public PistonCommand(Piston _Piston, boolean isWithoutToggle) {
     m_Piston = _Piston; 
+    m_isWithoutToggle = isWithoutToggle;
   }
 
   @Override
@@ -17,7 +18,12 @@ public class PistonCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_Piston.toggleSolenoid();
+    if (m_isWithoutToggle){
+      m_Piston.setReverse();
+    }
+    else {
+      m_Piston.toggleSolenoid();
+    }
     flag = true;
   }
 

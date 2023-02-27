@@ -15,15 +15,8 @@ public class Elevator extends SubsystemBase {
   private SparkMaxPIDController pidController = elevator.getPIDController();
   public Elevator() {
     elevator.setIdleMode(IdleMode.kBrake);
-    /*
-    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 95);
-    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
-    
-     */
     elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
-    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
+    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false); 
     enc_elevator.setPosition(0);
   }
 

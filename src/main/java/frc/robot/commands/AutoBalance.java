@@ -19,6 +19,7 @@ public class AutoBalance extends CommandBase {
     pidController.setSetpoint(90);
     pidController.setTolerance(2);
   }
+  
 
   @Override
   public void execute() {

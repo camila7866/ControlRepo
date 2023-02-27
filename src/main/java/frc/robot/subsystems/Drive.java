@@ -1,13 +1,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +21,10 @@ public class Drive extends SubsystemBase {
   public static AHRS navx = new AHRS();
 
   public Drive() {
+    dDer.setNeutralMode(NeutralMode.Brake);
+    dIzq.setNeutralMode(NeutralMode.Brake);
+    tDer.setNeutralMode(NeutralMode.Brake);
+    tIzq.setNeutralMode(NeutralMode.Brake);
     dDer.setInverted(true);
     tDer.setInverted(true);
     ResetEncoders();

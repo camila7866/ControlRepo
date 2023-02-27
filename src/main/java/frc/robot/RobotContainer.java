@@ -71,11 +71,12 @@ public class RobotContainer {
     )
   );
   private final SequentialCommandGroup restartAll = new SequentialCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 0),
+    new PistonCommand(m_Piston, true),
     new ParallelCommandGroup(
       new ArmCommand(m_Arm, false, 0, false),
       new StretchCommand(m_Stretch, false, 0)
-    )
+    ),
+    new ElevatorCommand(m_Elevator, false, 0)
   );
 
   public static CommandXboxController Control0 = new CommandXboxController(0);
@@ -105,23 +106,29 @@ public class RobotContainer {
     //Control1.x().toggleOnTrue(restartAll);
     //Control1.y().toggleOnTrue(new AutoBalance(m_Drive));
     //Control1.leftBumper().toggleOnTrue(new PistonCommand(m_Piston));
-    /*
-    */
     Control0.leftBumper().toggleOnTrue(new TeleopDrive(m_Drive, true));
     Control0.rightBumper().toggleOnTrue(m_TeleopDrive);
     Control0.povUp().toggleOnTrue(new DriveGoToAngle(m_Drive, 0));
     Control0.povRight().toggleOnTrue(new DriveGoToAngle(m_Drive, 90));
     Control0.povLeft().toggleOnTrue(new DriveGoToAngle(m_Drive, -90));
     Control0.povDown().toggleOnTrue(new DriveGoToAngle(m_Drive, 180));
-    Control0.button(4).toggleOnTrue(new PistonCommand(m_Piston));
-    Control1.a().toggleOnTrue(new ArmCommand(m_Arm, false, 0, false));
-    Control1.b().toggleOnTrue(new ArmCommand(m_Arm, false, -30, false)); 
-    Control1.x().toggleOnTrue(new SequentialCommandGroup(new ArmCommand(m_Arm, false, -37, false), new ArmCommand(m_Arm, false, -60, true)));
-    Control1.y().toggleOnTrue(new ArmCommand(m_Arm, false, -60, true)); 
-    Control0.a().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
-    Control0.b().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
-    Control0.x().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 110));
-    Control1.leftBumper().toggleOnTrue(new PistonCommand(m_Piston));
+    Control0.x().toggleOnTrue(new PistonCommand(m_Piston, false));
+    Control0.a().toggleOnTrue(restartAll);
+    Control1.leftBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
+    Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, -360));
+    Control1.x().toggleOnTrue(new SequentialCommandGroup(
+      new PistonCommand(m_Piston, true),
+      new ArmCommand(m_Arm, false, 0, false)));
+    Control1.y().toggleOnTrue(new SequentialCommandGroup(
+      new PistonCommand(m_Piston, true), 
+      new ArmCommand(m_Arm, false, -35, false)));
+    Control1.b().toggleOnTrue(new SequentialCommandGroup(
+      new ArmCommand(m_Arm, false, -37, false), 
+      new ArmCommand(m_Arm, false, -60, true))); 
+    Control1.povDown().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
+    Control1.povLeft().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
+    Control1.povRight().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
+    Control1.povUp().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 125)); 
   }
 
   public Command getAutonomousCommand() {

@@ -15,10 +15,8 @@ public class Arm extends SubsystemBase {
   private SparkMaxPIDController pidController = arm.getPIDController();
   public Arm() {
     arm.setIdleMode(IdleMode.kBrake);
-    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    arm.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
-    arm.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -60);
+    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
     enc_arm.setPosition(0);
   }
 
