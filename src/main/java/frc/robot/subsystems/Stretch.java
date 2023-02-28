@@ -33,7 +33,7 @@ public class Stretch extends SubsystemBase {
   }
   
   public void StretchPosition (double position){
-    pidController.setReference(position, CANSparkMax.ControlType.kSmartMotion);
+    pidController.setReference(position, CANSparkMax.ControlType.kPosition);
   }
   
   public void ResetEncoder(){
@@ -41,16 +41,12 @@ public class Stretch extends SubsystemBase {
   }
   
   public void ConfigForPosition(){
-    pidController.setP(0.00005);
-    pidController.setI(0.000001);
-    pidController.setD(0);
+    pidController.setP(0.1);
+    pidController.setI(0.0001);
+    pidController.setD(1);
     pidController.setIZone(0);
-    pidController.setFF(0.000156);
+    pidController.setFF(0);
     pidController.setOutputRange(-1, 1);
-    pidController.setSmartMotionMaxVelocity(40000, 0);
-    pidController.setSmartMotionMinOutputVelocity(0, 0);
-    pidController.setSmartMotionMaxAccel(20000, 0);
-    pidController.setSmartMotionAllowedClosedLoopError(2, 0);
   }
   
   public boolean IsStopped (double pos_goal){

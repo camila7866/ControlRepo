@@ -19,6 +19,10 @@ public class Piston extends SubsystemBase {
     piston.set(Value.kReverse);
   }
 
+  public void setForward(){
+    piston.set(Value.kForward);
+  }
+
   @Override
   public void periodic() {
   }

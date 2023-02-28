@@ -5,10 +5,11 @@ import frc.robot.subsystems.Piston;
 
 public class PistonCommand extends CommandBase {
   private final Piston m_Piston;
-  private boolean flag, m_isWithoutToggle;
-  public PistonCommand(Piston _Piston, boolean isWithoutToggle) {
+  private boolean flag, m_isReverse, m_isForward;
+  public PistonCommand(Piston _Piston, boolean isReverse, boolean isForward) {
     m_Piston = _Piston; 
-    m_isWithoutToggle = isWithoutToggle;
+    m_isForward = isForward;
+    m_isReverse = isReverse;
   }
 
   @Override
@@ -18,8 +19,11 @@ public class PistonCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if (m_isWithoutToggle){
+    if (m_isReverse){
       m_Piston.setReverse();
+    }
+    else if (m_isForward){
+      m_Piston.setForward();
     }
     else {
       m_Piston.toggleSolenoid();

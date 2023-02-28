@@ -6,11 +6,11 @@ import frc.robot.subsystems.Drive;
 
 public class DriveGoToAngle extends CommandBase {
   private final Drive m_Drive;
-  private PIDController pidController = new PIDController(0.0002, 0, 0);
+  private PIDController pidController = new PIDController(0.007, 0, 0);
   public DriveGoToAngle(Drive _Drive, double target_angle) {
     m_Drive = _Drive;
     pidController.enableContinuousInput(-180, 180);
-    pidController.setTolerance(5);
+    pidController.setTolerance(2);
     pidController.setSetpoint(target_angle);
     addRequirements(m_Drive);
   }

@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,6 +20,7 @@ public class Drive extends SubsystemBase {
   public TalonFX tDer = new TalonFX(2);
   public TalonFX tIzq = new TalonFX(3);
   public static AHRS navx = new AHRS();
+  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
   public Drive() {
     dDer.setNeutralMode(NeutralMode.Brake);
@@ -38,7 +40,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("dIzq position: ", dIzq.getSelectedSensorPosition());
     SmartDashboard.putNumber("dDer velocity: ", dDer.getSelectedSensorVelocity());
     SmartDashboard.putNumber("dIzq velocity: ", dIzq.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Yaw: ", navx.getYaw());
+    SmartDashboard.putNumber("Yaw: ", getBotHeadingDegrees());
     SmartDashboard.putNumber("Pitch: ", navx.getPitch());
     //Para adelante disminuye, si disminuye la velocidad tambien
   }
@@ -109,12 +111,11 @@ public class Drive extends SubsystemBase {
   }
 
   public double getBotHeadingFOC () {
-    return (Units.degreesToRadians(-navx.getYaw()));
+    return (Units.degreesToRadians(-gyro.getRotation2d().getDegrees() - (Math.round(-gyro.getRotation2d().getDegrees() / 360) * 360)));
   }
 
   public double getBotHeadingDegrees(){
-    double angle = -navx.getYaw();
-    angle += 180;
+    double angle = -gyro.getRotation2d().getDegrees() - (Math.round(-gyro.getRotation2d().getDegrees() / 360) * 360);
     return (angle);
   }
 
