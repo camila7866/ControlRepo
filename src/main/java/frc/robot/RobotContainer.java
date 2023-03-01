@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -48,14 +49,14 @@ public class RobotContainer {
   private final Piston m_Piston = new Piston();
 
   private final SequentialCommandGroup auto_left = new SequentialCommandGroup(
-    new AutoMotionMagic(m_Drive, 4.19, false),
-    new AutoMotionMagic(m_Drive, 2, true)
+    new AutoMotionMagic(m_Drive, -4.19, false),
+    new AutoMotionMagic(m_Drive, -2, true)
   );
   private final SequentialCommandGroup auto_middle = new SequentialCommandGroup(
     new AutoMotionMagic(m_Drive, -2, false)
   );
   private final SequentialCommandGroup auto_right = new SequentialCommandGroup(
-    new AutoMotionMagic(m_Drive, 4.19, false),
+    new AutoMotionMagic(m_Drive, -4.19, false),
     new AutoMotionMagic(m_Drive, -2, true)
   );
   private final SequentialCommandGroup pos_mid = new SequentialCommandGroup(
@@ -88,7 +89,7 @@ public class RobotContainer {
     )
   );
   private final SequentialCommandGroup toTakeCube = new SequentialCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 0),
+    new ElevatorCommand(m_Elevator, false, 60),
     new SequentialCommandGroup(
       new ArmCommand(m_Arm, false, -35, false), 
       new ArmCommand(m_Arm, false, -60, true)
@@ -116,16 +117,12 @@ public class RobotContainer {
   private void configureBindings() {
     Control0.leftBumper().toggleOnTrue(new TeleopDrive(m_Drive, true));
     Control0.rightBumper().toggleOnTrue(m_TeleopDrive);
-    Control0.povUp().toggleOnTrue(new DriveGoToAngle(m_Drive, 0));
-    Control0.povRight().toggleOnTrue(new DriveGoToAngle(m_Drive, 90));
-    Control0.povLeft().toggleOnTrue(new DriveGoToAngle(m_Drive, -90));
-    Control0.povDown().toggleOnTrue(new DriveGoToAngle(m_Drive, 180));
     Control0.a().toggleOnTrue(restartAll);
-    Control0.b().whileTrue(toTakeCone);
     Control0.x().toggleOnTrue(new PistonCommand(m_Piston, false, false));
+    Control0.b().whileTrue(toTakeCone);
     Control0.y().whileTrue(toTakeCube);
     Control1.leftBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
-    Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, -200));
+    Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, -360));
     Control1.b().toggleOnTrue(
       new SequentialCommandGroup(
         new ArmCommand(m_Arm, false, -35, false), 
@@ -141,7 +138,7 @@ public class RobotContainer {
     Control1.povDown().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
     Control1.povLeft().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
     Control1.povRight().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
-    Control1.povUp().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 125)); 
+    Control1.povUp().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 90)); 
   }
 
   public Command getAutonomousCommand() {
@@ -149,15 +146,28 @@ public class RobotContainer {
       new PistonCommand(m_Piston, true, false),
       new ParallelCommandGroup(
         new StretchCommand(m_Stretch, false, -180),
-        new ArmCommand(m_Arm, false, -35, false)
+        new ArmCommand(m_Arm, false, -40, false)
       ),
-      new PistonCommand(m_Piston, false, true),
-      new ParallelDeadlineGroup(new WaitCommand(2) , new IntakeCommand(m_Intake, false, 0.15)),
+      new ParallelDeadlineGroup(new WaitCommand(2), new IntakeCommand(m_Intake, false, 1)),
       new ParallelCommandGroup(
         new StretchCommand(m_Stretch, false, 0),
         new ArmCommand(m_Arm, false, 0, false)
       ),
       m_chooser_zone.getSelected()
+      /*
+      new ElevatorCommand(m_Elevator, false, 100),
+      new SequentialCommandGroup(
+        new ArmCommand(m_Arm, false, -35, false), 
+        new ArmCommand(m_Arm, false, -50, true)
+      ),
+       * 
+       new ParallelDeadlineGroup(new WaitCommand(10), new IntakeCommand(m_Intake, false, 1)),
+       new ParallelCommandGroup(
+         new ElevatorCommand(m_Elevator, false, 0),
+         new ArmCommand(m_Arm, false, 0, false)
+         ),
+         m_chooser_zone.getSelected()
+         */
     );
     return (Auto); 
   }

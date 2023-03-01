@@ -47,15 +47,15 @@ public class Elevator extends SubsystemBase {
     pidController.setIZone(0);
     pidController.setFF(0.000156);
     pidController.setOutputRange(-1, 1);
-    pidController.setSmartMotionMaxVelocity(2000, 0);
+    pidController.setSmartMotionMaxVelocity(4000, 0);
     pidController.setSmartMotionMinOutputVelocity(0, 0);
     pidController.setSmartMotionMaxAccel(1500, 0);
-    pidController.setSmartMotionAllowedClosedLoopError(2, 0);
+    pidController.setSmartMotionAllowedClosedLoopError(5, 0);
   }
   
   public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 3){
+    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 2){
       value = true;
     }
     return (value);

@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,9 +16,11 @@ public class Arm extends SubsystemBase {
   private SparkMaxPIDController pidController = arm.getPIDController();
   public Arm() {
     arm.setIdleMode(IdleMode.kBrake);
+    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    arm.setSoftLimit(SoftLimitDirection.kForward, 0);
+    arm.setSoftLimit(SoftLimitDirection.kReverse, -60);
     arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
-    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
-    enc_arm.setPosition(0);
+    ResetEncoder(); 
   }
 
   @Override
@@ -54,7 +57,7 @@ public class Arm extends SubsystemBase {
   
   public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(pos_goal - enc_arm.getPosition()) <= 3){
+    if (Math.abs(pos_goal - enc_arm.getPosition()) <= 2){
       value = true;
     }
     return (value);

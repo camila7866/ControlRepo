@@ -79,7 +79,7 @@ public class Drive extends SubsystemBase {
 		dDer.config_kP(0, 0.2);
 		dDer.config_kI(0, 0);
 	  dDer.config_kD(0, 0);
-    dDer.configMotionCruiseVelocity(10000);
+    dDer.configMotionCruiseVelocity(15000);
     dDer.configMotionAcceleration(6000);
   }
 
@@ -123,11 +123,12 @@ public class Drive extends SubsystemBase {
     return (navx.getPitch());
   }
 
-  public boolean MastersInZero (){
+  public boolean MastersInZero (double target){
     boolean value = false;
-    if (Math.abs(dIzq.getMotorOutputPercent()) == 0 && Math.abs(dDer.getMotorOutputPercent()) == 0){
+    if (Math.abs(target - dIzq.getSelectedSensorPosition()) < 2){
       value = true;
     }
+    SmartDashboard.putBoolean("Value ", value);
     return (value);
   }
 

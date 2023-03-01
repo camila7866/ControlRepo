@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Piston extends SubsystemBase {
   DoubleSolenoid piston = new DoubleSolenoid(61 ,PneumaticsModuleType.REVPH, 12, 15);
   public Piston() {
-    piston.set(Value.kReverse); 
+    piston.set(Value.kForward); 
   }
 
   public void toggleSolenoid (){

@@ -11,6 +11,7 @@ public class IntakeCommand extends CommandBase {
   public IntakeCommand(Intake _Intake, boolean isManual, double vel) {
     m_Intake = _Intake;
     m_IsManual = isManual;
+    vel_aut = vel; 
     addRequirements(m_Intake);
   }
 
