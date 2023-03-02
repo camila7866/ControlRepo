@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -118,8 +117,8 @@ public class RobotContainer {
     Control0.leftBumper().toggleOnTrue(new TeleopDrive(m_Drive, true));
     Control0.rightBumper().toggleOnTrue(m_TeleopDrive);
     Control0.a().toggleOnTrue(restartAll);
-    Control0.x().toggleOnTrue(new PistonCommand(m_Piston, false, false));
     Control0.b().whileTrue(toTakeCone);
+    Control0.x().toggleOnTrue(new PistonCommand(m_Piston, false, false));
     Control0.y().whileTrue(toTakeCube);
     Control1.leftBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
     Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, -360));
@@ -154,56 +153,7 @@ public class RobotContainer {
         new ArmCommand(m_Arm, false, 0, false)
       ),
       m_chooser_zone.getSelected()
-      /*
-      new ElevatorCommand(m_Elevator, false, 100),
-      new SequentialCommandGroup(
-        new ArmCommand(m_Arm, false, -35, false), 
-        new ArmCommand(m_Arm, false, -50, true)
-      ),
-       * 
-       new ParallelDeadlineGroup(new WaitCommand(10), new IntakeCommand(m_Intake, false, 1)),
-       new ParallelCommandGroup(
-         new ElevatorCommand(m_Elevator, false, 0),
-         new ArmCommand(m_Arm, false, 0, false)
-         ),
-         m_chooser_zone.getSelected()
-         */
     );
     return (Auto); 
   }
 }
-
-/*
- * SOFT LIMITS
- * Elevador: 125
- * Stretch: -360
- * Brazo: -60 
- */
-/*
- * CONTROL 0
- * Joystick Left - Adelante, Atras y Laterales
- * Joystick Right - Giro
- * Boton A - Robot gira viendo atras
- * Boton B - Robot gira viendo derecha
- * Boton X - Robot gira viendo izquierda
- * Boton Y - Robot gira viendo enfrente
- * Left Bumper - Activar FOC
- * Right Bumper - Activar mecanum normal
- * Manual del Intake
- * Left Trigger - Mete
- * Right Trigger - Saca
- * CONTROL 1
- * Manual Elevador
- * Joystick Left - Sube/Baja Elevador
- * Manual Brazo
- * Joystick Right - Mueve Brazo
- * Boton A - Posicion media
- * Boton B - Posicion alta
- * Boton X - Restablecer Elevador y Stretch y Brazo
- * Boton Y - Activar Balanceo 
- * Left Bumper - Cierra Garra
- * Right Bumper - Abre Garra
- * Manual del Stretch
- * Left Trigger - Mete
- * Right Trigger - Saca
- */
