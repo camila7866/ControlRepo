@@ -13,6 +13,7 @@ public class AutoMotionMagic extends CommandBase {
     m_isLateral = isLateral;
     m_Drive = drive;
     m_goal = Constants.ratio * (goal / Constants.kWheel);
+    flag = false;
     addRequirements(m_Drive);
   }
 
@@ -48,7 +49,9 @@ public class AutoMotionMagic extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    flag = false;
+  }
 
   @Override
   public boolean isFinished() {

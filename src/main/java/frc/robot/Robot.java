@@ -13,15 +13,15 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   public Compressor m_compressor_ph;
-  public UsbCamera VisionCam = new UsbCamera("Camera", 1); 
+  public UsbCamera VisionCam = new UsbCamera("Camera", 0); 
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     m_compressor_ph = new Compressor(PneumaticsModuleType.REVPH);
     m_compressor_ph.enableDigital();
-    VisionCam.setFPS(60);
-    VisionCam.setResolution(160, 120);
+    VisionCam.setFPS(55);
+    VisionCam.setResolution(190, 120);
     VisionCam = CameraServer.startAutomaticCapture();
   }
 

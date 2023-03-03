@@ -61,8 +61,8 @@ public class Drive extends SubsystemBase {
 		dIzq.config_kP(0, 0.2);
 		dIzq.config_kI(0, 0);
 	  dIzq.config_kD(0, 0);
-    dIzq.configMotionCruiseVelocity(8000);
-    dIzq.configMotionAcceleration(6000);
+    dIzq.configMotionCruiseVelocity(19000);
+    dIzq.configMotionAcceleration(19000);
 
     dDer.configFactoryDefault();
     dDer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -79,8 +79,8 @@ public class Drive extends SubsystemBase {
 		dDer.config_kP(0, 0.2);
 		dDer.config_kI(0, 0);
 	  dDer.config_kD(0, 0);
-    dDer.configMotionCruiseVelocity(15000);
-    dDer.configMotionAcceleration(6000);
+    dDer.configMotionCruiseVelocity(19000);
+    dDer.configMotionAcceleration(19000);
   }
 
   public void RunToPosition (double rev_der, double rev_izq ){
@@ -125,7 +125,7 @@ public class Drive extends SubsystemBase {
 
   public boolean MastersInZero (double target){
     boolean value = false;
-    if (Math.abs(target - dIzq.getSelectedSensorPosition()) < 2){
+    if (Math.abs(target - dIzq.getSelectedSensorPosition()) < 5){
       value = true;
     }
     SmartDashboard.putBoolean("Value ", value);

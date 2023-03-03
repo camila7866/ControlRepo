@@ -48,32 +48,20 @@ public class RobotContainer {
   private final Piston m_Piston = new Piston();
 
   private final SequentialCommandGroup auto_left = new SequentialCommandGroup(
-    new AutoMotionMagic(m_Drive, -4.19, false),
+    new AutoMotionMagic(m_Drive, -3.5, false),
     new AutoMotionMagic(m_Drive, -2, true)
   );
   private final SequentialCommandGroup auto_middle = new SequentialCommandGroup(
-    new AutoMotionMagic(m_Drive, -2, false)
+    new AutoMotionMagic(m_Drive, -0.3, false),
+    new DriveGoToAngle(m_Drive, 180),
+    new AutoMotionMagic(m_Drive, 2.8, false)
   );
   private final SequentialCommandGroup auto_right = new SequentialCommandGroup(
-    new AutoMotionMagic(m_Drive, -4.19, false),
+    new AutoMotionMagic(m_Drive, -3.5, false),
     new AutoMotionMagic(m_Drive, -2, true)
   );
-  private final SequentialCommandGroup pos_mid = new SequentialCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 0),
-    new ParallelCommandGroup(
-      new ArmCommand(m_Arm, false, 0, false),
-      new StretchCommand(m_Stretch, false, 0)
-    )
-  );
-  private final SequentialCommandGroup pos_high = new SequentialCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 0),
-    new ParallelCommandGroup(
-      new ArmCommand(m_Arm, false, 0, false),
-      new StretchCommand(m_Stretch, false, 0)
-    )
-  );
   private final SequentialCommandGroup restartAll = new SequentialCommandGroup(
-    new PistonCommand(m_Piston, true, false),
+    new PistonCommand(m_Piston, true),
     new ParallelCommandGroup(
       new ArmCommand(m_Arm, false, 0, false),
       new StretchCommand(m_Stretch, false, 0)
@@ -84,7 +72,7 @@ public class RobotContainer {
     new ElevatorCommand(m_Elevator, false, 60),
     new ParallelCommandGroup(
       new ArmCommand(m_Arm, false, -35, false),
-      new PistonCommand(m_Piston, false, true)
+      new PistonCommand(m_Piston, false)
     )
   );
   private final SequentialCommandGroup toTakeCube = new SequentialCommandGroup(
@@ -100,9 +88,8 @@ public class RobotContainer {
   public static CommandXboxController Control1 = new CommandXboxController(1);
   
   public RobotContainer() {
-    DriverStation.getLocation();
-    m_chooser_zone.setDefaultOption("Left Zone", auto_left);
-    m_chooser_zone.addOption("Middle Zone", auto_middle);
+    m_chooser_zone.setDefaultOption("Middle Zone", auto_middle);
+    m_chooser_zone.addOption("Left Zone", auto_left);
     m_chooser_zone.addOption("Right Zone", auto_right);
     SmartDashboard.putData("Zone", m_chooser_zone);
     m_Drive.setDefaultCommand(m_TeleopDrive);
@@ -114,12 +101,18 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    //Control 0
     Control0.leftBumper().toggleOnTrue(new TeleopDrive(m_Drive, true));
     Control0.rightBumper().toggleOnTrue(m_TeleopDrive);
+    Control0.povUp().toggleOnTrue(new DriveGoToAngle(m_Drive, 0));
+    Control0.povLeft().toggleOnTrue(new DriveGoToAngle(m_Drive, -90));
+    Control0.povRight().toggleOnTrue(new DriveGoToAngle(m_Drive, 90));
+    Control0.povDown().toggleOnTrue(new DriveGoToAngle(m_Drive, 180));
     Control0.a().toggleOnTrue(restartAll);
     Control0.b().whileTrue(toTakeCone);
-    Control0.x().toggleOnTrue(new PistonCommand(m_Piston, false, false));
+    Control0.x().toggleOnTrue(new PistonCommand(m_Piston, false));
     Control0.y().whileTrue(toTakeCube);
+    //Control 1
     Control1.leftBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
     Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, -360));
     Control1.b().toggleOnTrue(
@@ -129,10 +122,10 @@ public class RobotContainer {
       )
     ); 
     Control1.x().toggleOnTrue(new SequentialCommandGroup(
-      new PistonCommand(m_Piston, true, false),
+      new PistonCommand(m_Piston, true),
       new ArmCommand(m_Arm, false, 0, false)));
     Control1.y().toggleOnTrue(new SequentialCommandGroup(
-      new PistonCommand(m_Piston, true, false), 
+      new PistonCommand(m_Piston, true), 
       new ArmCommand(m_Arm, false, -35, false)));
     Control1.povDown().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
     Control1.povLeft().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
@@ -142,16 +135,10 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     SequentialCommandGroup Auto = new SequentialCommandGroup(
-      new PistonCommand(m_Piston, true, false),
-      new ParallelCommandGroup(
-        new StretchCommand(m_Stretch, false, -180),
-        new ArmCommand(m_Arm, false, -40, false)
-      ),
-      new ParallelDeadlineGroup(new WaitCommand(2), new IntakeCommand(m_Intake, false, 1)),
-      new ParallelCommandGroup(
-        new StretchCommand(m_Stretch, false, 0),
-        new ArmCommand(m_Arm, false, 0, false)
-      ),
+      new PistonCommand(m_Piston, true),
+      new ArmCommand(m_Arm, false, -40, false),
+      new ParallelDeadlineGroup(new WaitCommand(1.5), new IntakeCommand(m_Intake, false, 1)),
+      new ArmCommand(m_Arm, false, 0, false),
       m_chooser_zone.getSelected()
     );
     return (Auto); 

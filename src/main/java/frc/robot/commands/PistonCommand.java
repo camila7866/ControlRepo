@@ -1,15 +1,17 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Piston;
 
 public class PistonCommand extends CommandBase {
   private final Piston m_Piston;
-  private boolean flag, m_isReverse, m_isForward;
-  public PistonCommand(Piston _Piston, boolean isReverse, boolean isForward) {
-    m_Piston = _Piston; 
-    m_isForward = isForward;
+  private boolean flag = false, m_isReverse;
+  public PistonCommand(Piston s_Piston, boolean isReverse) {
+    m_Piston = s_Piston; 
     m_isReverse = isReverse;
+    addRequirements(m_Piston);
+    flag = false;
   }
 
   @Override
@@ -19,11 +21,9 @@ public class PistonCommand extends CommandBase {
 
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("a", flag);
     if (m_isReverse){
       m_Piston.setReverse();
-    }
-    else if (m_isForward){
-      m_Piston.setForward();
     }
     else {
       m_Piston.toggleSolenoid();
@@ -32,10 +32,13 @@ public class PistonCommand extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    flag = false;
+  }
 
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("a", flag);
     return flag;
   }
 }

@@ -10,7 +10,7 @@ public class DriveGoToAngle extends CommandBase {
   public DriveGoToAngle(Drive _Drive, double target_angle) {
     m_Drive = _Drive;
     pidController.enableContinuousInput(-180, 180);
-    pidController.setTolerance(2);
+    pidController.setTolerance(5);
     pidController.setSetpoint(target_angle);
     addRequirements(m_Drive);
   }
