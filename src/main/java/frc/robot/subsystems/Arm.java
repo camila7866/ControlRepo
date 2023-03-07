@@ -26,8 +26,6 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm Position: ", enc_arm.getPosition());
-    SmartDashboard.putNumber("Arm Output: ", arm.getAppliedOutput());
-    SmartDashboard.putNumber("Arm Vel: ", enc_arm.getVelocity());
   }
 
   public void ArmPower (double vel){

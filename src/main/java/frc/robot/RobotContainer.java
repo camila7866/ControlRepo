@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoMotionMagic;
+import frc.robot.commands.Calibrating;
 import frc.robot.commands.DriveGoToAngle;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.ElevatorCommand;
@@ -133,12 +134,17 @@ public class RobotContainer {
     //Control 1
     Control1.leftBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
     Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, -360));
-    Control1.b().toggleOnTrue(
-      new SequentialCommandGroup(
-        new ArmCommand(m_Arm, false, -35, false), 
-        new ArmCommand(m_Arm, false, -60, true)
-      )
-    ); 
+    Control1.a().toggleOnTrue(new AutoBalance(m_Drive, m_Intake));
+    Control1.b().toggleOnTrue(new Calibrating(m_Drive));
+    /*
+     * 
+     Control1.b().toggleOnTrue(
+       new SequentialCommandGroup(
+         new ArmCommand(m_Arm, false, -35, false), 
+         new ArmCommand(m_Arm, false, -60, true)
+       )
+     ); 
+     */
     Control1.x().toggleOnTrue(new SequentialCommandGroup(
       new PistonCommand(m_Piston, true, false),
       new ArmCommand(m_Arm, false, -10, false)));

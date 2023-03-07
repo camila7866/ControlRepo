@@ -21,6 +21,7 @@ public class Drive extends SubsystemBase {
   public TalonFX tIzq = new TalonFX(3);
   public static AHRS navx = new AHRS();
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  public double zero_pitch = 0;
 
   public Drive() {
     dDer.setNeutralMode(NeutralMode.Brake);
@@ -38,10 +39,9 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("dDer position: ", dDer.getSelectedSensorPosition());
     SmartDashboard.putNumber("dIzq position: ", dIzq.getSelectedSensorPosition());
-    SmartDashboard.putNumber("dDer velocity: ", dDer.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("dIzq velocity: ", dIzq.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Yaw: ", getBotHeadingDegrees());
     SmartDashboard.putNumber("Pitch: ", navx.getPitch());
+    SmartDashboard.putNumber("ZeroPitch", zero_pitch);
   }
 
   public void configMastersForPosition(){
@@ -128,6 +128,22 @@ public class Drive extends SubsystemBase {
       value = true;
     }
     return (value);
+  }
+
+  public void restartNavx (){
+    navx.calibrate();
+  }
+
+  public boolean Calibrating (){
+    return (navx.isCalibrating());
+  }
+
+  public void setZeroPitch (double _zero){
+    zero_pitch = _zero;
+  }
+
+  public double getZeroPitch (){
+    return (zero_pitch);
   }
 
   @Override

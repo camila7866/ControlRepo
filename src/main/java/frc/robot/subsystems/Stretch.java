@@ -25,7 +25,6 @@ public class Stretch extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Stretch Position: ", enc_stretch.getPosition());
-    SmartDashboard.putNumber("Stretch Vel: ", enc_stretch.getVelocity());
   }
 
   public void StretchPower (double vel){
