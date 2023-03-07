@@ -18,7 +18,7 @@ public class Elevator extends SubsystemBase {
     elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
     elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true); 
     elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
-    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 125);
+    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 120);
     enc_elevator.setPosition(0);
   }
 
@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
   
   public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 2){
+    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 5){
       value = true;
     }
     return (value);

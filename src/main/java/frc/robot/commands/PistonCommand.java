@@ -6,10 +6,11 @@ import frc.robot.subsystems.Piston;
 
 public class PistonCommand extends CommandBase {
   private final Piston m_Piston;
-  private boolean flag = false, m_isReverse;
-  public PistonCommand(Piston s_Piston, boolean isReverse) {
+  private boolean flag = false, m_isReverse, m_isForward;
+  public PistonCommand(Piston s_Piston, boolean isReverse, boolean isForward) {
     m_Piston = s_Piston; 
     m_isReverse = isReverse;
+    m_isForward = isForward;
     addRequirements(m_Piston);
     flag = false;
   }
@@ -21,8 +22,10 @@ public class PistonCommand extends CommandBase {
 
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("a", flag);
-    if (m_isReverse){
+    if (m_isForward){
+      m_Piston.setForward();
+    }
+    else if (m_isReverse){
       m_Piston.setReverse();
     }
     else {
@@ -33,7 +36,6 @@ public class PistonCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    flag = false;
   }
 
   @Override

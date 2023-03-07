@@ -15,10 +15,10 @@ public class Stretch extends SubsystemBase {
   private SparkMaxPIDController pidController = stretch.getPIDController();
   public Stretch() {
     stretch.setIdleMode(IdleMode.kBrake);
-    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
-    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -360);
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
+    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
+    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -360);
     ResetEncoder();
   }
 

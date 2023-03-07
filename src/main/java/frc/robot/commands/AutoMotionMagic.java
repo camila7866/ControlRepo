@@ -33,24 +33,18 @@ public class AutoMotionMagic extends CommandBase {
 
   @Override
   public void execute() {
-    flag = m_Drive.MastersInZero(Math.abs(m_goal));
-    //double Daux = Math.abs(m_goal) - Math.abs(m_Drive.dDer.getSelectedSensorPosition());
-    //flag = m_Drive.MastersInZero(m_goal)
+    flag = m_Drive.MastersInZero(m_goal);
     if (m_isLateral){
       m_Drive.RunToPosition(-m_goal, m_goal);
     }
     else {
       m_Drive.RunToPosition(m_goal, m_goal);
     }
-    //if (Daux <=5) {
-      //flag = true; 
-    //}
     SmartDashboard.putBoolean("Flag Auto", flag);
   }
 
   @Override
   public void end(boolean interrupted) {
-    flag = false;
   }
 
   @Override

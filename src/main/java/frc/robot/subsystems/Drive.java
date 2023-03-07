@@ -42,7 +42,6 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("dIzq velocity: ", dIzq.getSelectedSensorVelocity());
     SmartDashboard.putNumber("Yaw: ", getBotHeadingDegrees());
     SmartDashboard.putNumber("Pitch: ", navx.getPitch());
-    //Para adelante disminuye, si disminuye la velocidad tambien
   }
 
   public void configMastersForPosition(){
@@ -128,7 +127,6 @@ public class Drive extends SubsystemBase {
     if (Math.abs(target - dIzq.getSelectedSensorPosition()) < 5){
       value = true;
     }
-    SmartDashboard.putBoolean("Value ", value);
     return (value);
   }
 
