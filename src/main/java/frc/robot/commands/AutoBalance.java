@@ -19,8 +19,7 @@ public class AutoBalance extends CommandBase {
   
   @Override
   public void initialize() {
-    //m_Drive.followMotorInFront();
-    //Diferencia de maximo 15 grados
+    m_Drive.followMotorInFront();
     pidController.setSetpoint(m_Drive.getZeroPitch());
     pidController.setTolerance(0.1);
   }
@@ -39,7 +38,7 @@ public class AutoBalance extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_Intake.intake.set(0);
-    m_Drive.setToMasters(0, 0);
+    //m_Drive.setToMasters(0, 0);
   }
 
   @Override

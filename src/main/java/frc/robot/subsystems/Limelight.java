@@ -12,13 +12,16 @@ public class Limelight extends SubsystemBase {
   NetworkTableEntry ty = table_limelight.getEntry("ty");
   NetworkTableEntry ts = table_limelight.getEntry("ts");
   NetworkTableEntry tid = table_limelight.getEntry("tid");
+  NetworkTableEntry botpose = table_limelight.getEntry("targetpose_robotspace");
   public Limelight() {}
 
   @Override
   public void periodic() {
+    double [] array_botpose = botpose.getDoubleArray(new double[6]);
     SmartDashboard.putNumber("Tx", tx.getDouble(0.0));
     SmartDashboard.putNumber("Ty", ty.getDouble(0.0));
     SmartDashboard.putNumber("Ts", ts.getDouble(0.0));
     SmartDashboard.putNumber("Id AprilTag", tid.getDouble(-1));
+    SmartDashboard.putNumberArray("BotPose", array_botpose);
   }
 }

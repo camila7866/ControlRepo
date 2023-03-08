@@ -5,32 +5,31 @@ import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoMotionMagic;
 import frc.robot.commands.Calibrating;
 import frc.robot.commands.DriveGoToAngle;
-import frc.robot.commands.DriveStraight;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PistonCommand;
-import frc.robot.commands.SoloPruebas;
 import frc.robot.commands.StretchCommand;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Piston;
 import frc.robot.subsystems.Stretch;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
   SendableChooser<Command> m_chooser_zone = new SendableChooser<>();
+
+  private final Limelight m_Limelight = new Limelight();
 
   private final Drive m_Drive = new Drive();
   private final TeleopDrive m_TeleopDrive = new TeleopDrive(m_Drive, false);
@@ -80,8 +79,13 @@ public class RobotContainer {
       new AutoMotionMagic(m_Drive, -3.5, false)
     )
   );
-
-  private final AutoMotionMagic onlyParking = new AutoMotionMagic(m_Drive, 5.5, false);
+  private final SequentialCommandGroup AutoNew  = new SequentialCommandGroup(
+    new ParallelDeadlineGroup(new WaitCommand(1.5), new IntakeCommand(m_Intake, false, -0.5)),
+    new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 0),
+      new ArmCommand(m_Arm, false, 0, false)
+    )
+  );
   private final SequentialCommandGroup toTakeConeOrCube = new SequentialCommandGroup(
     new ParallelCommandGroup(
       new ElevatorCommand(m_Elevator, false, 60),
@@ -89,20 +93,6 @@ public class RobotContainer {
     ),
     new PistonCommand(m_Piston, false, true)
   );
-
-  /*  private final SequentialCommandGroup LateralReverse = new SequentialCommandGroup(
-    new PistonCommand(m_Piston, true, false),
-    new ParallelDeadlineGroup(
-      new ElevatorCommand(m_Elevator, false, 100),
-      new ArmCommand(m_Arm, false, -15, false)
-    ),
-    new ParallelDeadlineGroup(new WaitCommand(2.5), new IntakeCommand(m_Intake, false, 1)),
-    new ParallelDeadlineGroup(
-      new ElevatorCommand(m_Elevator, false, 0),
-      new ArmCommand(m_Arm, false, 0, false)
-    ),
-    new AutoMotionMagic(m_Drive, 3.5, false)
-  );*/
 
   public static CommandXboxController Control0 = new CommandXboxController(0);
   public static CommandXboxController Control1 = new CommandXboxController(1);
@@ -153,8 +143,9 @@ public class RobotContainer {
       new ArmCommand(m_Arm, false, -35, false)));
     Control1.povDown().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
     Control1.povLeft().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
-    Control1.povRight().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60));
-    Control1.povUp().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 100)); 
+    Control1.povRight().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 60
+    ));
+    Control1.povUp().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 95)); 
   }
 
   public Command getAutonomousCommand() {
