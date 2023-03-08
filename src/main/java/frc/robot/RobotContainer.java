@@ -161,3 +161,12 @@ public class RobotContainer {
     return (m_chooser_zone.getSelected());
   }
 }
+/*
+ * Control 1
+ * LEFT BUMPER - REST EL
+ * RIGHT BUMPER - REST ARM O INTAKE NO SE
+ * A - POS MID - CONO
+ * B - POR HIGH - CONO
+ * X - REST ALL
+ * Y - POS PARA RECOGER
+ */
