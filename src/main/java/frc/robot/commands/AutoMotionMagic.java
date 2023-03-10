@@ -7,12 +7,13 @@ import frc.robot.subsystems.Drive;
 
 public class AutoMotionMagic extends CommandBase {
   private final Drive m_Drive;
-  private boolean m_isLateral, flag;
+  private boolean m_isLateral, flag, first_zero;
   private double m_goal;
+  private int counter;
   public AutoMotionMagic (Drive drive, double goal, boolean isLateral) {
     m_isLateral = isLateral;
     m_Drive = drive;
-    m_goal = Constants.ratio * (goal / Constants.kWheel);
+    m_goal = Constants.cpr * Constants.ratio * (goal / Constants.kWheel);
     flag = false;
     addRequirements(m_Drive);
   }
@@ -29,18 +30,30 @@ public class AutoMotionMagic extends CommandBase {
       m_Drive.followMotorInFront();
     }
     m_Drive.ResetEncoders();
+    first_zero = true;
   }
 
   @Override
   public void execute() {
-    flag = m_Drive.MastersInZero(m_goal);
+    if (first_zero){
+      if (!m_Drive.MastersInZero()){
+        first_zero = false;
+      }
+    }
+    else {
+      if (m_Drive.MastersInZero()){
+        flag = true;
+      }
+    }
     if (m_isLateral){
       m_Drive.RunToPosition(-m_goal, m_goal);
     }
     else {
       m_Drive.RunToPosition(m_goal, m_goal);
     }
-    SmartDashboard.putBoolean("Flag Auto", flag);
+    SmartDashboard.putNumber("AutoMotionGoal", m_goal);
+    SmartDashboard.putBoolean("AutoMotionMagicIsFinished", flag);
+    SmartDashboard.putBoolean("MasterInzero", m_Drive.MastersInZero());
   }
 
   @Override

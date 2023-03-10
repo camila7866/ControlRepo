@@ -39,6 +39,8 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("dDer position: ", dDer.getSelectedSensorPosition());
     SmartDashboard.putNumber("dIzq position: ", dIzq.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Dder Volt", dDer.getMotorOutputPercent());
+    SmartDashboard.putNumber("DIzq Volt", dIzq.getMotorOutputPercent());
     SmartDashboard.putNumber("Yaw: ", getBotHeadingDegrees());
     SmartDashboard.putNumber("Pitch: ", navx.getPitch());
     SmartDashboard.putNumber("ZeroPitch", zero_pitch);
@@ -60,8 +62,9 @@ public class Drive extends SubsystemBase {
 		dIzq.config_kP(0, 0.2);
 		dIzq.config_kI(0, 0);
 	  dIzq.config_kD(0, 0);
-    dIzq.configMotionCruiseVelocity(19000);
-    dIzq.configMotionAcceleration(19000);
+    dIzq.configMotionCruiseVelocity(7000);
+    dIzq.configMotionAcceleration(4500);
+    dIzq.configAllowableClosedloopError(0, 100);
 
     dDer.configFactoryDefault();
     dDer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -78,13 +81,12 @@ public class Drive extends SubsystemBase {
 		dDer.config_kP(0, 0.2);
 		dDer.config_kI(0, 0);
 	  dDer.config_kD(0, 0);
-    dDer.configMotionCruiseVelocity(19000);
-    dDer.configMotionAcceleration(19000);
+    dDer.configMotionCruiseVelocity(7000);
+    dDer.configMotionAcceleration(4500);
+    dDer.configAllowableClosedloopError(0, 100);
   }
 
-  public void RunToPosition (double rev_der, double rev_izq ){
-    double PosDer = Constants.cpr * rev_der;
-    double PosIzq = Constants.cpr * rev_izq;
+  public void RunToPosition (double PosDer, double PosIzq){
 		dIzq.set(TalonFXControlMode.MotionMagic, PosIzq);
     dDer.set(TalonFXControlMode.MotionMagic, PosDer);
   }
@@ -122,9 +124,10 @@ public class Drive extends SubsystemBase {
     return (navx.getPitch());
   }
 
-  public boolean MastersInZero (double target){
+  public boolean MastersInZero (){
     boolean value = false;
-    if (Math.abs(target - dIzq.getSelectedSensorPosition()) < 5){
+
+    if (Math.abs(dDer.getMotorOutputVoltage()) == 0 || Math.abs(dIzq.getMotorOutputVoltage()) == 0){
       value = true;
     }
     return (value);
