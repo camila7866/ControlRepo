@@ -83,8 +83,10 @@ public class RobotContainer {
     new ParallelDeadlineGroup(new WaitCommand(1.5), new IntakeCommand(m_Intake, false, -0.5)),
     new ParallelCommandGroup(
       new ElevatorCommand(m_Elevator, false, 0),
+      new StretchCommand(m_Stretch, false, 0),
       new ArmCommand(m_Arm, false, 0, false)
-    )
+    ),
+    new ParallelDeadlineGroup(new WaitCommand(1.5), new IntakeCommand(m_Intake, false, 0.5))
   );
   private final SequentialCommandGroup toTakeConeOrCube = new SequentialCommandGroup(
     new ParallelCommandGroup(

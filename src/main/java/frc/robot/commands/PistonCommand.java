@@ -40,7 +40,6 @@ public class PistonCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    SmartDashboard.putBoolean("a", flag);
     return flag;
   }
 }
