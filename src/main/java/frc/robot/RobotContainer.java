@@ -4,6 +4,7 @@ import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoMotionMagic;
 import frc.robot.commands.Calibrating;
+import frc.robot.commands.ChangeState;
 import frc.robot.commands.DriveGoToAngle;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.IntakeCommand;
@@ -15,12 +16,16 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Piston;
 import frc.robot.subsystems.Stretch;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -31,6 +36,8 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser_zone = new SendableChooser<>();
 
   private final Limelight m_Limelight = new Limelight();
+
+  private final LEDS m_LEDS = new LEDS();
 
   private final Drive m_Drive = new Drive();
   private final TeleopDrive m_TeleopDrive = new TeleopDrive(m_Drive, false);
@@ -104,13 +111,16 @@ public class RobotContainer {
     m_chooser_zone.setDefaultOption("Middle Zone", AutoMiddle);
     m_chooser_zone.addOption("Left/Right Zone", AutoSides);
     m_chooser_zone.addOption("Nose ", AutoNew);
-    
     SmartDashboard.putData("Zone", m_chooser_zone);
+
     m_Drive.setDefaultCommand(m_TeleopDrive);
     m_Elevator.setDefaultCommand(m_ElevatorCommand);
     m_Stretch.setDefaultCommand(m_StretchCommand);
     m_Arm.setDefaultCommand(m_ArmCommand);
     m_Intake.setDefaultCommand(m_IntakeCommand);
+
+    CommandScheduler.getInstance().onCommandExecute(command -> Shuffleboard.addEventMarker("ActiveCommand", command.getName(), EventImportance.kNormal));
+
     configureBindings();
   }
 
@@ -127,6 +137,10 @@ public class RobotContainer {
     Control0.x().whileTrue(new SoloPruebas(m_Drive, -1, 0.9));
     Control0.y().whileTrue(new SoloPruebas(m_Drive, 1, -0.9));
     //Control 1
+    Control1.button(7).onTrue(new ChangeState(m_LEDS));
+    Control1.leftBumper().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
+    Control1.a().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 50));
+    Control1.b().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 100));
   }
 
   public Command getAutonomousCommand() {

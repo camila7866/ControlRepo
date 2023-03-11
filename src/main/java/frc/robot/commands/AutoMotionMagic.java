@@ -9,7 +9,6 @@ public class AutoMotionMagic extends CommandBase {
   private final Drive m_Drive;
   private boolean m_isLateral, flag, first_zero;
   private double m_goal;
-  private int counter;
   public AutoMotionMagic (Drive drive, double goal, boolean isLateral) {
     m_isLateral = isLateral;
     m_Drive = drive;
