@@ -61,7 +61,7 @@ public class RobotContainer {
     new ParallelCommandGroup(
       new ArmCommand(m_Arm, false, -10, false),
       new StretchCommand(m_Stretch, false, 0)
-    ),
+    ), 
     new ElevatorCommand(m_Elevator, false, 0)
   );
   private final SequentialCommandGroup AutoMiddle = new SequentialCommandGroup(
@@ -119,8 +119,6 @@ public class RobotContainer {
     m_Arm.setDefaultCommand(m_ArmCommand);
     m_Intake.setDefaultCommand(m_IntakeCommand);
 
-    CommandScheduler.getInstance().onCommandExecute(command -> Shuffleboard.addEventMarker("ActiveCommand", command.getName(), EventImportance.kNormal));
-
     configureBindings();
   }
 
@@ -140,7 +138,7 @@ public class RobotContainer {
     Control1.button(7).onTrue(new ChangeState(m_LEDS));
     Control1.leftBumper().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
     Control1.a().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 50));
-    Control1.b().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 100));
+    Control1.b().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 100)); 
   }
 
   public Command getAutonomousCommand() {
