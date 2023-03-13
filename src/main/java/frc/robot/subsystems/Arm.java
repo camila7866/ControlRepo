@@ -15,7 +15,6 @@ public class Arm extends SubsystemBase {
   public final CANSparkMax arm = new CANSparkMax(6, MotorType.kBrushless);
   private RelativeEncoder enc_arm = arm.getEncoder(); 
   private SparkMaxPIDController pidController = arm.getPIDController();
-  private ArmFeedforward arm_feedforward = new ArmFeedforward(0, 0, 0, 0);
   public Arm() {
     arm.setIdleMode(IdleMode.kBrake);
     arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);

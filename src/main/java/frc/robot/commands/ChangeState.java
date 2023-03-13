@@ -1,23 +1,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Intake;
 
 public class ChangeState extends CommandBase {
-  private final LEDS m_LEDS;
-  public ChangeState(LEDS _LEDS) {
-    m_LEDS = _LEDS;
-    addRequirements(m_LEDS);
+  private final Intake m_Intake;
+  public ChangeState(Intake _Intake) {
+    m_Intake = _Intake;
   }
 
   @Override
-  public void initialize() {
-  }
-  
+  public void initialize() {}
+
   @Override
   public void execute() {
-    m_LEDS.toggle();
-
+    m_Intake.toggle();
   }
 
   @Override

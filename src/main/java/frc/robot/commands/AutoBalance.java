@@ -32,12 +32,12 @@ public class AutoBalance extends CommandBase {
     double input = m_Drive.getPitch();
     double output = pidController.calculate(input); 
     //m_Drive.setToMasters(output, output);
-    m_Intake.intake.set(output);
+    //m_Intake.intake.set(output);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_Intake.intake.set(0);
+    //m_Intake.intake.set(0);
     //m_Drive.setToMasters(0, 0);
   }
 

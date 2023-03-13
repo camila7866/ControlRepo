@@ -1,36 +1,38 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends CommandBase {
   private final Intake m_Intake;
-  private boolean m_IsManual;
-  private double vel_aut;
-  public IntakeCommand(Intake _Intake, boolean isManual, double vel) {
+  public IntakeCommand(Intake _Intake) {
     m_Intake = _Intake;
-    m_IsManual = isManual;
-    vel_aut = vel; 
     addRequirements(m_Intake);
   }
 
   @Override
-  public void initialize() {}
-
+  public void initialize() {
+  }
+  
   @Override
   public void execute() {
-    if (m_IsManual){
-      m_Intake.intake.set(RobotContainer.Control0.getRightTriggerAxis() - RobotContainer.Control0.getLeftTriggerAxis());
+    double power = RobotContainer.Control1.getRightTriggerAxis() - RobotContainer.Control1.getLeftTriggerAxis();
+    if (!m_Intake.latch){
+      power = -power;
+    } 
+    if (m_Intake.getSensorState()){
+      power = 0;
     }
-    else {
-      m_Intake.intake.set(vel_aut);
-    }
+    SmartDashboard.putBoolean("ValueButton", m_Intake.getSensorState());
+    SmartDashboard.putNumber("Vel Intake", power);
+    m_Intake.setPowerIntake(power);
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_Intake.intake.set(0);
+    m_Intake.setPowerIntake(0);
   }
 
   @Override
