@@ -18,7 +18,7 @@ public class IntakeCommand extends CommandBase {
   
   @Override
   public void execute() {
-    double power = RobotContainer.Control1.getRightTriggerAxis() - RobotContainer.Control1.getLeftTriggerAxis();
+    double power = RobotContainer.Control0.getRightTriggerAxis() - RobotContainer.Control0.getLeftTriggerAxis();
     if (!m_Intake.latch){
       power = -power;
     } 

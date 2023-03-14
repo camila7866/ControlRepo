@@ -1,11 +1,13 @@
 package frc.robot;
 
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoMotionMagic;
 import frc.robot.commands.ChangeState;
 import frc.robot.commands.DriveGoToAngle;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeCommandAuto;
 import frc.robot.commands.StretchCommand;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.Arm;
@@ -18,9 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
@@ -48,11 +48,11 @@ public class RobotContainer {
   
   private final SequentialCommandGroup AutoNew  = new SequentialCommandGroup(
     new ParallelCommandGroup(
-      new ElevatorCommand(m_Elevator, false, 0),
-      new StretchCommand(m_Stretch, false, 0),
-      new ArmCommand(m_Arm, false, 0, false)
+      new ElevatorCommand(m_Elevator, false, 95),
+      new StretchCommand(m_Stretch, false, 350),
+      new ArmCommand(m_Arm, false,80, false)
     ),
-    new ParallelDeadlineGroup(new WaitCommand(1), new IntakeCommand(m_Intake)),
+    new IntakeCommandAuto(m_Intake, 0.5, false),
     new ParallelCommandGroup(
       new SequentialCommandGroup( //Comandos Traccion
         new AutoMotionMagic(m_Drive, -6, false),
@@ -69,12 +69,26 @@ public class RobotContainer {
           new StretchCommand(m_Stretch, false, 0)
         ),
         new ArmCommand(m_Arm, false, 0, false),
-        new ParallelDeadlineGroup(new WaitCommand(1), new IntakeCommand(m_Intake)),
+        new IntakeCommandAuto(m_Intake, 0.5, true),
         new ElevatorCommand(m_Elevator, false, 0)
       )
     ),
     new StretchCommand(m_Stretch, false, 0),
-    new ParallelDeadlineGroup(new WaitCommand(1), new IntakeCommand(m_Intake))
+    new IntakeCommandAuto(m_Intake, -0.5, false)
+  );
+
+  private final SequentialCommandGroup AutoNew2 = new SequentialCommandGroup(
+    new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 95),
+      new StretchCommand(m_Stretch, false, 350),
+      new ArmCommand(m_Arm, false,80, false)
+    ),
+    new IntakeCommandAuto(m_Intake, 0.5, false),
+    new AutoMotionMagic(m_Drive, -1, false),
+    new DriveGoToAngle(m_Drive, 90),
+    new DriveGoToAngle(m_Drive, 180),
+    new AutoMotionMagic(m_Drive, 1.5, false),
+    new AutoBalance(m_Drive)
   );
   
   public RobotContainer() {
@@ -94,17 +108,36 @@ public class RobotContainer {
 
   private void configureBindings() {
     //Control 0
-    Control0.leftBumper().toggleOnTrue(new TeleopDrive(m_Drive, true));
-    Control0.rightBumper().toggleOnTrue(m_TeleopDrive);
-    Control0.povUp().toggleOnTrue(new DriveGoToAngle(m_Drive, 0));
-    Control0.povLeft().toggleOnTrue(new DriveGoToAngle(m_Drive, -90));
-    Control0.povRight().toggleOnTrue(new DriveGoToAngle(m_Drive, 90));
-    Control0.povDown().toggleOnTrue(new DriveGoToAngle(m_Drive, 180));
+    Control0.leftBumper().onTrue(new ChangeState(m_Intake));
+    Control0.rightBumper().toggleOnTrue(new TeleopDrive(m_Drive, true));
+    Control0.y().toggleOnTrue(new DriveGoToAngle(m_Drive, 0));
+    Control0.x().toggleOnTrue(new DriveGoToAngle(m_Drive, -90));
+    Control0.b().toggleOnTrue(new DriveGoToAngle(m_Drive, 90));
+    Control0.a().toggleOnTrue(new DriveGoToAngle(m_Drive, 180));
     //Control 1
     Control1.button(7).onTrue(new ChangeState(m_Intake));
-    Control1.leftBumper().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 0));
-    Control1.a().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 50));
-    Control1.b().toggleOnTrue(new ElevatorCommand(m_Elevator, false, 95)); 
+    Control1.leftBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
+    Control1.rightBumper().toggleOnTrue(new StretchCommand(m_Stretch, false, 0));
+    Control1.a().toggleOnTrue(new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 50),
+      new StretchCommand(m_Stretch, false, 0),
+      new ArmCommand(m_Arm, false, -75, false)
+    ));
+    Control1.b().toggleOnTrue(new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 95),
+      new StretchCommand(m_Stretch, false, -300),
+      new ArmCommand(m_Arm, false, -75, false)
+    ));
+    Control1.x().toggleOnTrue(new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 0),
+      new StretchCommand(m_Stretch, false, 0),
+      new ArmCommand(m_Arm, false, 0, false)
+    ));
+    Control1.y().toggleOnTrue(new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 50),
+      new StretchCommand(m_Stretch, false, 0),
+      new ArmCommand(m_Arm, false, 40, false)
+    ));
   }
 
   public Command getAutonomousCommand() {

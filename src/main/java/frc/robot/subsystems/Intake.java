@@ -53,10 +53,10 @@ public class Intake extends SubsystemBase {
       case 2:
       outputs[0] = true;
       outputs[1] = false;
-      State = "Cube";
+      State = "Has Cube";
       break;
       case 3:
-      State = "Has Cube";
+      State = "Cube";
       outputs[0] = true;
       outputs[1] = true;
       break;

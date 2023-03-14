@@ -8,13 +8,10 @@ import frc.robot.subsystems.Intake;
 
 public class AutoBalance extends CommandBase {
   private final Drive m_Drive;
-  private final Intake m_Intake;
   private PIDController pidController = new PIDController(2, 0, 0);
-  public AutoBalance(Drive _Drive, Intake _Intake) {
+  public AutoBalance(Drive _Drive) {
     m_Drive = _Drive;
-    m_Intake = _Intake;
     addRequirements(m_Drive);
-    addRequirements(m_Intake);
   }
   
   @Override
@@ -32,12 +29,10 @@ public class AutoBalance extends CommandBase {
     double input = m_Drive.getPitch();
     double output = pidController.calculate(input); 
     //m_Drive.setToMasters(output, output);
-    //m_Intake.intake.set(output);
   }
 
   @Override
   public void end(boolean interrupted) {
-    //m_Intake.intake.set(0);
     //m_Drive.setToMasters(0, 0);
   }
 
