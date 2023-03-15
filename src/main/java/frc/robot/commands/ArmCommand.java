@@ -6,24 +6,18 @@ import frc.robot.subsystems.Arm;
 
 public class ArmCommand extends CommandBase {
   private Arm m_Arm;
-  private boolean m_isManual, flag = false, m_isFullPos;
+  private boolean m_isManual, flag = false;
   private double m_pos;
-  public ArmCommand(Arm _Arm, boolean isManual, double pos, boolean isFullPos) {
+  public ArmCommand(Arm _Arm, boolean isManual, double pos) {
     m_Arm = _Arm;
     m_isManual = isManual;
-    m_isFullPos = isFullPos;
     m_pos = pos;
     addRequirements(m_Arm);
   }
 
   @Override
   public void initialize() {
-    if (m_isFullPos){
-      m_Arm.ConfigForPosition(1200, 1200);
-    }
-    else {
-      m_Arm.ConfigForPosition(1500, 2000); 
-    }
+    m_Arm.ConfigForPosition(40000, 40000); 
   }
 
   @Override

@@ -7,6 +7,8 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends CommandBase {
   private final Intake m_Intake;
+  private boolean delay;
+  private double start_delay, end_delay;
   public IntakeCommand(Intake _Intake) {
     m_Intake = _Intake;
     addRequirements(m_Intake);
@@ -23,9 +25,20 @@ public class IntakeCommand extends CommandBase {
       power = -power;
     } 
     if (m_Intake.getSensorState()){
-      power = 0;
+      delay = true;
+      start_delay = System.currentTimeMillis();
+      //power = 0;
     }
-    SmartDashboard.putBoolean("ValueButton", m_Intake.getSensorState());
+    /*
+     * 
+     if (delay){
+       double time = System.currentTimeMillis() - start_delay;
+       if (time >= 1000){
+         power = 0;
+         delay = false;
+       }
+     }
+     */
     SmartDashboard.putNumber("Vel Intake", power);
     m_Intake.setPowerIntake(power);
   }

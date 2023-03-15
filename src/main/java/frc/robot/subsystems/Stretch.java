@@ -2,9 +2,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxLimitSwitch.Type;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,18 +15,23 @@ public class Stretch extends SubsystemBase {
   public CANSparkMax stretch = new CANSparkMax(4, MotorType.kBrushless);
   private RelativeEncoder enc_stretch = stretch.getEncoder();
   private SparkMaxPIDController pidController = stretch.getPIDController();
+  public SparkMaxLimitSwitch limit_for = stretch.getForwardLimitSwitch(Type.kNormallyClosed);
   public Stretch() {
     stretch.setIdleMode(IdleMode.kBrake);
+    limit_for.enableLimitSwitch(true);
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -500);
     stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
-    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
-    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
-    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -360);
+    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 5);
     ResetEncoder();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Stretch Position: ", enc_stretch.getPosition());
+    if (limit_for.isPressed()){
+      ResetEncoder();
+    }
   }
 
   public void StretchPower (double vel){

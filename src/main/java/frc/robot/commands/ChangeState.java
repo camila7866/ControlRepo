@@ -7,6 +7,7 @@ public class ChangeState extends CommandBase {
   private final Intake m_Intake;
   public ChangeState(Intake _Intake) {
     m_Intake = _Intake;
+    addRequirements(m_Intake);
   }
 
   @Override

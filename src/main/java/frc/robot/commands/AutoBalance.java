@@ -28,12 +28,12 @@ public class AutoBalance extends CommandBase {
     SmartDashboard.putNumber("PitchCommand", m_Drive.getPitch());
     double input = m_Drive.getPitch();
     double output = pidController.calculate(input); 
-    //m_Drive.setToMasters(output, output);
+    m_Drive.setToMasters(output, output);
   }
 
   @Override
   public void end(boolean interrupted) {
-    //m_Drive.setToMasters(0, 0);
+    m_Drive.setToMasters(0, 0);
   }
 
   @Override
