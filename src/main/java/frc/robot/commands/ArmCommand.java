@@ -23,7 +23,7 @@ public class ArmCommand extends CommandBase {
   @Override
   public void execute() {
     if (m_isManual){
-      double power = RobotContainer.Control1.getRightY();
+      double power = -RobotContainer.Control1.getRightY();
       if (Math.abs(power) <= 0.2){
         power = 0;
       }

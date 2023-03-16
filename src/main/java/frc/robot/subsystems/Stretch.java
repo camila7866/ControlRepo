@@ -15,23 +15,23 @@ public class Stretch extends SubsystemBase {
   public CANSparkMax stretch = new CANSparkMax(4, MotorType.kBrushless);
   private RelativeEncoder enc_stretch = stretch.getEncoder();
   private SparkMaxPIDController pidController = stretch.getPIDController();
-  public SparkMaxLimitSwitch limit_for = stretch.getForwardLimitSwitch(Type.kNormallyClosed);
+  //public SparkMaxLimitSwitch limit_for = stretch.getForwardLimitSwitch(Type.kNormallyClosed);
   public Stretch() {
     stretch.setIdleMode(IdleMode.kBrake);
-    limit_for.enableLimitSwitch(true);
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,true);
+    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0 );
     stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -500);
-    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
-    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 5);
+    stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -350);
+    //limit_for.enableLimitSwitch(true);
     ResetEncoder();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Stretch Position: ", enc_stretch.getPosition());
-    if (limit_for.isPressed()){
+    /*if (limit_for.isPressed()){
       ResetEncoder();
-    }
+    }*/
   }
 
   public void StretchPower (double vel){

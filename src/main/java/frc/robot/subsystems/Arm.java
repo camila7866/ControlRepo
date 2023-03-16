@@ -23,10 +23,10 @@ public class Arm extends SubsystemBase {
   public Arm() {
     arm.setIdleMode(IdleMode.kBrake);
     limit_for.enableLimitSwitch(true);
-    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+    //arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
     //arm.setSoftLimit(SoftLimitDirection.kForward, 0);
     arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    arm.setSoftLimit(SoftLimitDirection.kReverse, -200);
+    arm.setSoftLimit(SoftLimitDirection.kReverse, -380);
     ResetEncoder();
   }
 

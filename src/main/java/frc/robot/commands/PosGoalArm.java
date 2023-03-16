@@ -4,23 +4,40 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
-public class PosArmSingle extends CommandBase {
+public class PosGoalArm extends CommandBase {
   private final Arm m_Arm;
-  private double posicion;
   private boolean flag;
-  public PosArmSingle(Arm _Arm) {
-    m_Arm = _Arm; 
+  private int m_level;
+  private double posicion;
+  public PosGoalArm(Arm _Arm, int level) {
+    m_Arm = _Arm;
+    m_level = level;
     addRequirements(m_Arm);
   }
 
   @Override
   public void initialize() {
-    m_Arm.ConfigForPosition(1500, 2000);
+    flag = false;
+    m_Arm.ConfigForPosition(40000, 40000);
     if (Intake.latch){
-      posicion = -47;
+      if (m_level == 0){
+        posicion = -90;
+      } else if (m_level == 1){
+        posicion = -100;
+      }
+      else {
+        posicion = -100;
+      }
     }
     else {
-      posicion = -67;
+      if (m_level == 0){
+        posicion = -35;
+      } else if (m_level == 1){
+        posicion = -75;
+      }
+      else {
+        posicion = -80;
+      }
     }
   }
 

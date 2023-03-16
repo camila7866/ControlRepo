@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
   private final DigitalOutput pin2 = new DigitalOutput(1);
   private boolean[] outputs = new boolean[2];
   private String State = "";
-  public boolean latch = true;
+  public static boolean latch = true;
   public int state = 0;
   public Intake() {
     intake.setIdleMode(IdleMode.kBrake);

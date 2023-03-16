@@ -19,7 +19,7 @@ public class RestartStretch extends CommandBase {
   @Override
   public void execute() {
     m_Stretch.StretchPower(0.5);
-    flag = m_Stretch.limit_for.isPressed();
+    flag = true;//m_Stretch.limit_for.isPressed();
   }
 
   @Override
