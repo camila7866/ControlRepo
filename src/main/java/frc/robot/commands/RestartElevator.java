@@ -18,7 +18,7 @@ public class RestartElevator extends CommandBase {
 
   @Override
   public void execute() {
-    m_Elevator.ElevatorPower(-0.5);
+    m_Elevator.ElevatorPower(-0.65);
     flag = m_Elevator.limit_rev.isPressed();
   }
 

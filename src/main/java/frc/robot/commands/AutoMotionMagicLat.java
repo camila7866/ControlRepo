@@ -5,15 +5,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
-public class AutoMotionMagic extends CommandBase {
+public class AutoMotionMagicLat extends CommandBase {
   private final Drive m_Drive;
   private boolean flag, first_zero;
   private double m_goal, m_max_vel, m_max_accel;
-  public AutoMotionMagic (Drive drive, double goal, double max_vel, double max_accel) {
+  public AutoMotionMagicLat (Drive drive, double goal) {
     m_Drive = drive;
     m_goal = Constants.cpr * Constants.ratio * (goal / Constants.kWheel);
-    m_max_vel = max_vel;
-    m_max_accel = max_accel;
     flag = false;
     addRequirements(m_Drive);
   }
@@ -22,8 +20,8 @@ public class AutoMotionMagic extends CommandBase {
   @Override
   public void initialize() {
     flag = false;
-    m_Drive.configMastersForPosition(m_max_vel, m_max_accel);
-    m_Drive.followMotorInFront();
+    m_Drive.configMastersForPosition(15000, 6000);
+    m_Drive.followMotorInCrossover();
     m_Drive.ResetEncoders();
     first_zero = true;
   }
@@ -40,7 +38,7 @@ public class AutoMotionMagic extends CommandBase {
         flag = true;
       }
     }
-    m_Drive.RunToPosition(m_goal, m_goal);
+    m_Drive.RunToPosition(-m_goal, m_goal);
     SmartDashboard.putNumber("AutoMotionGoal", m_goal);
     SmartDashboard.putBoolean("AutoMotionMagicIsFinished", flag);
     SmartDashboard.putBoolean("MasterInzero", m_Drive.MastersInZero());

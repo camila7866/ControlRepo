@@ -23,20 +23,21 @@ public class PosGoalStretch extends CommandBase {
       if (m_level == 0){
         posicion = 0;
       } else if (m_level == 1){
-        posicion = -100;
+        posicion = -145;
+        
       }
       else {
-        posicion = -200;
+        posicion = -500;
       }
     }
     else {
       if (m_level == 0){
         posicion = 0;
       } else if (m_level == 1){
-        posicion = -100;
+        posicion = -160;
       }
       else {
-        posicion = -200;
+        posicion = -500;
       }
     }
   }

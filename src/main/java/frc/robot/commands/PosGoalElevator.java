@@ -22,20 +22,20 @@ public class PosGoalElevator extends CommandBase {
       if (m_level == 0){
         posicion = 0;
       } else if (m_level == 1){
-        posicion = 50;
+        posicion = 102.5;
       }
       else {
-        posicion = 90;
+        posicion = 102.5;
       }
     }
     else {
       if (m_level == 0){
         posicion = 0;
       } else if (m_level == 1){
-        posicion = 50;
+        posicion = 90;
       }
       else {
-        posicion = 90;
+        posicion = 102.5;
       }
     }
   }

@@ -45,7 +45,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("ZeroPitch", zero_pitch);
   }
 
-  public void configMastersForPosition(){
+  public void configMastersForPosition(double max_vel, double max_accel){
     dIzq.configFactoryDefault();
     dIzq.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     dIzq.configNeutralDeadband(0.001);
@@ -61,9 +61,9 @@ public class Drive extends SubsystemBase {
 		dIzq.config_kP(0, 0.2);
 		dIzq.config_kI(0, 0);
 	  dIzq.config_kD(0, 0);
-    dIzq.configMotionCruiseVelocity(7000);
-    dIzq.configMotionAcceleration(4500);
-    dIzq.configAllowableClosedloopError(0, 100);
+    dIzq.configMotionCruiseVelocity(max_vel);
+    dIzq.configMotionAcceleration(max_accel);
+    //dIzq.configAllowableClosedloopError(0, 100);
 
     dDer.configFactoryDefault();
     dDer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -80,9 +80,9 @@ public class Drive extends SubsystemBase {
 		dDer.config_kP(0, 0.2);
 		dDer.config_kI(0, 0);
 	  dDer.config_kD(0, 0);
-    dDer.configMotionCruiseVelocity(7000);
-    dDer.configMotionAcceleration(4500);
-    dDer.configAllowableClosedloopError(0, 100);
+    dDer.configMotionCruiseVelocity(max_vel);
+    dDer.configMotionAcceleration(max_accel);
+    //dDer.configAllowableClosedloopError(0, 100);
   }
 
   public void RunToPosition (double PosDer, double PosIzq){

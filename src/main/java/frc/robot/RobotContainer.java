@@ -3,12 +3,14 @@ package frc.robot;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.AutoMotionMagic;
+import frc.robot.commands.AutoMotionMagicLat;
 import frc.robot.commands.Calibrating;
 import frc.robot.commands.ChangeState;
 import frc.robot.commands.DriveGoToAngle;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeCommandAuto;
+import frc.robot.commands.OnlyVelDrive;
 import frc.robot.commands.PosArmSingle;
 import frc.robot.commands.PosGoalArm;
 import frc.robot.commands.PosGoalElevator;
@@ -28,7 +30,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
@@ -53,57 +57,57 @@ public class RobotContainer {
 
   public final Arm m_Arm = new Arm();
   private final ArmCommand m_ArmCommand = new ArmCommand(m_Arm, true, 0);
-  
-  private final SequentialCommandGroup AutoNew  = new SequentialCommandGroup(
+
+  private final SequentialCommandGroup AutoMiddle = new SequentialCommandGroup(
     new ParallelCommandGroup(
-      new ElevatorCommand(m_Elevator, false, 95),
-      new StretchCommand(m_Stretch, false, 350),
-      new ArmCommand(m_Arm, false, 80)
+      new ElevatorCommand(m_Elevator, false, 102),
+      new StretchCommand(m_Stretch, false, -500),
+      new ArmCommand(m_Arm, false, -55)
     ),
-    new IntakeCommandAuto(m_Intake, 0.5, false),
+    new ParallelDeadlineGroup(new WaitCommand(2), new IntakeCommandAuto(m_Intake, 0.4, false)),
     new ParallelCommandGroup(
-      new SequentialCommandGroup( //Comandos Traccion
-        new AutoMotionMagic(m_Drive, -6, false),
-        new DriveGoToAngle(m_Drive, 45),
-        new AutoMotionMagic(m_Drive, 1.5, false),
-        //new DriveGoToAngle(m_Drive, -45),
-        //new AutoMotionMagic(m_Drive, 1.5, false),
-        new DriveGoToAngle(m_Drive, 0),
-        new AutoMotionMagic(m_Drive, 4, false)
-      ),
-      new SequentialCommandGroup( //Comandos Sistemas
-        new ParallelCommandGroup(
-          new ElevatorCommand(m_Elevator, false, 0),
-          new StretchCommand(m_Stretch, false, 0)
-        ),
-        new ArmCommand(m_Arm, false, 0),
-        new IntakeCommandAuto(m_Intake, 0.5, true),
-        new ElevatorCommand(m_Elevator, false, 0)
-      )
+      new ElevatorCommand(m_Elevator, false, 0),
+      new StretchCommand(m_Stretch, false, 0),
+      new ArmCommand(m_Arm, false, 0)
     ),
-    new StretchCommand(m_Stretch, false, 0),
-    new IntakeCommandAuto(m_Intake, -0.5, false)
+    new AutoMotionMagic(m_Drive, -4.5, 15000, 6000)
   );
 
-  private final SequentialCommandGroup AutoNew2 = new SequentialCommandGroup(
+  private final SequentialCommandGroup AutoSides = new SequentialCommandGroup(
     new ParallelCommandGroup(
-      new ElevatorCommand(m_Elevator, false, 95),
-      new StretchCommand(m_Stretch, false, 350),
-      new ArmCommand(m_Arm, false,80)
+      new ElevatorCommand(m_Elevator, false, 102),
+      new StretchCommand(m_Stretch, false, -500),
+      new ArmCommand(m_Arm, false, -55)
     ),
-    new IntakeCommandAuto(m_Intake, 0.5, false),
-    new AutoMotionMagic(m_Drive, -1, false),
-    new DriveGoToAngle(m_Drive, 90),
-    new DriveGoToAngle(m_Drive, 180),
-    new Calibrating(m_Drive),
-    new AutoMotionMagic(m_Drive, 1.5, false),
-    new AutoBalance(m_Drive)
+    new ParallelDeadlineGroup(new WaitCommand(2), new IntakeCommandAuto(m_Intake, 0.5, false)),
+    new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 0),
+      new StretchCommand(m_Stretch, false, 0),
+      new ArmCommand(m_Arm, false, 0)
+    ),
+    new AutoMotionMagic(m_Drive, -4, 15000,7500)
+  );
+
+  private final SequentialCommandGroup IntentoRaro = new SequentialCommandGroup(
+    new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 102),
+      new StretchCommand(m_Stretch, false, -500),
+      new ArmCommand(m_Arm, false, -55)
+    ),
+    new ParallelDeadlineGroup(new WaitCommand(2), new IntakeCommandAuto(m_Intake, 0.4, false)),
+    new ParallelCommandGroup(
+      new ElevatorCommand(m_Elevator, false, 0),
+      new StretchCommand(m_Stretch, false, 0),
+      new ArmCommand(m_Arm, false, 0)
+    ),
+    new ParallelDeadlineGroup(new WaitCommand(2), new OnlyVelDrive(m_Drive, -0.5)),
+    new AutoMotionMagic(m_Drive, 1.5, 15000, 6000)
   );
 
   public final ParallelCommandGroup restartAll = new ParallelCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 0),
-    new StretchCommand(m_Stretch, false, 0),
-    new ArmCommand(m_Arm, false, 0)
+    new RestartElevator(m_Elevator),
+    new RestartStretch(m_Stretch),
+    new RestartArm(m_Arm)
   );
 
   private final ParallelCommandGroup cuboSuelo = new ParallelCommandGroup(
@@ -119,15 +123,15 @@ public class RobotContainer {
   );
 
   private final SequentialCommandGroup conoParado = new SequentialCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 53),
+    new ElevatorCommand(m_Elevator, false, 55),
     new ParallelCommandGroup(
       new StretchCommand(m_Stretch, false, -118),
-      new ArmCommand(m_Arm, false, -150)
+      new ArmCommand(m_Arm, false, -148)
     )
   );
 
   private final ParallelCommandGroup posSingleSub = new ParallelCommandGroup(
-    new ElevatorCommand(m_Elevator, false, 32),
+    new ElevatorCommand(m_Elevator, false, 0),
     new StretchCommand(m_Stretch, false, 0),
     new PosArmSingle(m_Arm)
   );
@@ -155,10 +159,9 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    m_chooser_zone.setDefaultOption("Middle Zone", null);
-    m_chooser_zone.addOption("Left/Right Zone", null);
-    m_chooser_zone.addOption("Nose ", AutoNew);
-    m_chooser_zone.addOption("TampocoNose ", AutoNew2);
+    m_chooser_zone.setDefaultOption("Middle Zone", AutoMiddle);
+    m_chooser_zone.addOption("Left/Right Zone", AutoSides);
+    m_chooser_zone.addOption("IntentoRaro", IntentoRaro);
     SmartDashboard.putData("Zone", m_chooser_zone);
 
     m_Drive.setDefaultCommand(m_TeleopDrive);
@@ -177,6 +180,10 @@ public class RobotContainer {
     Control0.y().toggleOnTrue(new DriveGoToAngle(m_Drive, 0));
     Control0.x().toggleOnTrue(new DriveGoToAngle(m_Drive, -90));
     Control0.b().toggleOnTrue(new DriveGoToAngle(m_Drive, 90));
+    Control0.povDown().toggleOnTrue(new IntakeCommandAuto(m_Intake, 0.5, true));
+    Control0.povRight().toggleOnTrue(new IntakeCommandAuto(m_Intake, -0.5, false));
+    Control0.povLeft().toggleOnTrue(new IntakeCommandAuto(m_Intake, -0.5, true));
+    Control0.povUp().toggleOnTrue(new IntakeCommandAuto(m_Intake, 0.5, false));
     //Control 1 
     Control1.button(7).onTrue(new ChangeState(m_Intake));
     Control1.leftBumper().toggleOnTrue(restartAll);

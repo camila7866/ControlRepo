@@ -21,22 +21,22 @@ public class PosGoalArm extends CommandBase {
     m_Arm.ConfigForPosition(40000, 40000);
     if (Intake.latch){
       if (m_level == 0){
-        posicion = -90;
+        posicion = -130;
       } else if (m_level == 1){
-        posicion = -100;
+        posicion = -115;
       }
       else {
-        posicion = -100;
+        posicion = -89;
       }
     }
     else {
       if (m_level == 0){
-        posicion = -35;
+        posicion = -70;
       } else if (m_level == 1){
-        posicion = -75;
+        posicion = -40;
       }
       else {
-        posicion = -80;
+        posicion = -55;
       }
     }
   }

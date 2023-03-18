@@ -22,6 +22,7 @@ public class Intake extends SubsystemBase {
   public int state = 0;
   public Intake() {
     intake.setIdleMode(IdleMode.kBrake);
+    intake.setInverted(false);
     intake.enableSoftLimit(SoftLimitDirection.kForward, false);
     intake.enableSoftLimit(SoftLimitDirection.kReverse, false);
 
@@ -32,11 +33,13 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putString("State", State);
+    SmartDashboard.putBoolean("Latch", latch);
+    SmartDashboard.putBoolean("SensorIntake", getSensorState());
     states();
   }
 
   public void states() {
-    state = latch?3:0;
+    state = latch?0:3;
     if (state == 0 && getSensorState()){
       state = 1;
     }
@@ -76,7 +79,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void toggle() {
-    latch = !latch;
+    latch = !latch; 
   }
 
   public void setPowerIntake (double vel){

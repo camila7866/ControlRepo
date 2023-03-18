@@ -26,14 +26,14 @@ public class Arm extends SubsystemBase {
     //arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
     //arm.setSoftLimit(SoftLimitDirection.kForward, 0);
     arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    arm.setSoftLimit(SoftLimitDirection.kReverse, -380);
+    arm.setSoftLimit(SoftLimitDirection.kReverse, -180);
     ResetEncoder();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm Position: ", enc_arm.getPosition());
-    SmartDashboard.putNumber("Arm Pos Radias", ArmPosRadians());
+    SmartDashboard.putBoolean("Limit Arm", limit_for.isPressed());
     if (limit_for.isPressed()){
       ResetEncoder();
     }

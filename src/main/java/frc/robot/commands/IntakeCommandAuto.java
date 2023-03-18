@@ -23,10 +23,12 @@ public class IntakeCommandAuto extends CommandBase {
   public void execute() {
     m_Intake.setPowerIntake(m_vel);
     if (m_TakeObject){
-      flag = m_Intake.getSensorState();
+      //flag = m_Intake.getSensorState();
+      flag = false;
     }
     else {
-      flag = !m_Intake.getSensorState();
+      //flag = !m_Intake.getSensorState();
+      flag = false;
     }
   }
 

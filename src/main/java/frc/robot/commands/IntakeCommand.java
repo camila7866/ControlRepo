@@ -23,22 +23,7 @@ public class IntakeCommand extends CommandBase {
     double power = RobotContainer.Control0.getRightTriggerAxis() - RobotContainer.Control0.getLeftTriggerAxis();
     if (!m_Intake.latch){
       power = -power;
-    } 
-    if (m_Intake.getSensorState()){
-      delay = true;
-      start_delay = System.currentTimeMillis();
-      //power = 0;
     }
-    /*
-     * 
-     if (delay){
-       double time = System.currentTimeMillis() - start_delay;
-       if (time >= 1000){
-         power = 0;
-         delay = false;
-       }
-     }
-     */
     SmartDashboard.putNumber("Vel Intake", power);
     m_Intake.setPowerIntake(power);
   }

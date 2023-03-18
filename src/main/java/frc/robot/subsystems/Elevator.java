@@ -18,11 +18,11 @@ public class Elevator extends SubsystemBase {
   public SparkMaxLimitSwitch limit_rev = elevator.getReverseLimitSwitch(Type.kNormallyClosed);
   public Elevator() {
     elevator.setIdleMode(IdleMode.kBrake);
-    limit_rev.enableLimitSwitch(false);
-    elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+    limit_rev.enableLimitSwitch(true);
+    //elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
+    //elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 100);
+    elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 103);
     enc_elevator.setPosition(0);
   }
 
@@ -30,9 +30,10 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Elevator Position ", enc_elevator.getPosition());
     SmartDashboard.putNumber("Elevator Velocity ", enc_elevator.getVelocity());
-    /*if (limit_rev.isPressed()){
+    SmartDashboard.putBoolean("Limit Elevator", limit_rev.isPressed());
+    if (limit_rev.isPressed()){
       ResetEncoder();
-    }*/
+    }
   }
 
   public void ElevatorPower (double vel){
@@ -66,5 +67,5 @@ public class Elevator extends SubsystemBase {
       value = true;
     }
     return (value);
-  }
+  }<
 }

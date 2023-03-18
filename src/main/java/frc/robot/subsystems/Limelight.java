@@ -18,10 +18,10 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     double [] array_botpose = botpose.getDoubleArray(new double[6]);
-    SmartDashboard.putNumber("Tx", tx.getDouble(0.0));
-    SmartDashboard.putNumber("Ty", ty.getDouble(0.0));
-    SmartDashboard.putNumber("Ts", ts.getDouble(0.0));
-    SmartDashboard.putNumber("Id AprilTag", tid.getDouble(-1));
-    SmartDashboard.putNumberArray("BotPose", array_botpose);
+    //SmartDashboard.putNumber("Tx", tx.getDouble(0.0));
+    //SmartDashboard.putNumber("Ty", ty.getDouble(0.0));
+    //SmartDashboard.putNumber("Ts", ts.getDouble(0.0));
+    //SmartDashboard.putNumber("Id AprilTag", tid.getDouble(-1));
+    //SmartDashboard.putNumberArray("BotPose", array_botpose);
   }
 }
