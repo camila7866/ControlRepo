@@ -67,5 +67,5 @@ public class Elevator extends SubsystemBase {
       value = true;
     }
     return (value);
-  }<
+  }
 }
