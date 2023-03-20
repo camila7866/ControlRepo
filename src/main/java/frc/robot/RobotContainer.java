@@ -91,17 +91,20 @@ public class RobotContainer {
   private final SequentialCommandGroup IntentoRaro = new SequentialCommandGroup(
     new ParallelCommandGroup(
       new ElevatorCommand(m_Elevator, false, 102),
-      new StretchCommand(m_Stretch, false, -500),
-      new ArmCommand(m_Arm, false, -55)
+      new StretchCommand(m_Stretch, false, -300),
+      new ArmCommand(m_Arm, false, -85)
     ),
-    new ParallelDeadlineGroup(new WaitCommand(2), new IntakeCommandAuto(m_Intake, 0.4, false)),
+    new ParallelDeadlineGroup(new WaitCommand(1.5), new IntakeCommandAuto(m_Intake, 0.4, false)),
     new ParallelCommandGroup(
       new ElevatorCommand(m_Elevator, false, 0),
       new StretchCommand(m_Stretch, false, 0),
-      new ArmCommand(m_Arm, false, 0)
+      new ArmCommand(m_Arm, false, -50)
     ),
-    new ParallelDeadlineGroup(new WaitCommand(2), new OnlyVelDrive(m_Drive, -0.5)),
-    new AutoMotionMagic(m_Drive, 1.5, 15000, 6000)
+    new AutoMotionMagic(m_Drive, -0.5, 15000, 6000),
+    new DriveGoToAngle(m_Drive, -90),
+    new DriveGoToAngle(m_Drive, -178),
+    new AutoMotionMagic(m_Drive, 0.5, 15000, 6000),
+    new ParallelDeadlineGroup(new ArmCommand(m_Arm, false, -130), new OnlyVelDrive(m_Drive, 0.25))
   );
 
   public final ParallelCommandGroup restartAll = new ParallelCommandGroup(

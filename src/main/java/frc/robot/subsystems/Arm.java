@@ -42,8 +42,6 @@ public class Arm extends SubsystemBase {
   public void ArmPower (double vel){
     arm.set(vel);
   }
-
-  public void ArmPosFeed (){}
   
   public void ArmPosition (double position){
     pidController.setReference(position, CANSparkMax.ControlType.kSmartMotion);
@@ -76,5 +74,9 @@ public class Arm extends SubsystemBase {
       value = true;
     }
     return (value);
+  }
+
+  public double getPosition (){
+    return enc_arm.getPosition();
   }
 }
