@@ -7,8 +7,6 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends CommandBase {
   private final Intake m_Intake;
-  private boolean delay;
-  private double start_delay, end_delay;
   public IntakeCommand(Intake _Intake) {
     m_Intake = _Intake;
     addRequirements(m_Intake);
@@ -21,7 +19,7 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     double power = RobotContainer.Control0.getRightTriggerAxis() - RobotContainer.Control0.getLeftTriggerAxis();
-    if (!m_Intake.latch){
+    if (!Intake.latch){
       power = -power;
     }
     SmartDashboard.putNumber("Vel Intake", power);

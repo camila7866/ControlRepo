@@ -8,7 +8,7 @@ import frc.robot.subsystems.Drive;
 public class AutoMotionMagicLat extends CommandBase {
   private final Drive m_Drive;
   private boolean flag, first_zero;
-  private double m_goal, m_max_vel, m_max_accel;
+  private double m_goal;
   public AutoMotionMagicLat (Drive drive, double goal) {
     m_Drive = drive;
     m_goal = Constants.cpr * Constants.ratio * (goal / Constants.kWheel);

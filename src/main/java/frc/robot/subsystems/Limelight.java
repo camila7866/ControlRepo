@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
@@ -17,7 +16,6 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double [] array_botpose = botpose.getDoubleArray(new double[6]);
     //SmartDashboard.putNumber("Tx", tx.getDouble(0.0));
     //SmartDashboard.putNumber("Ty", ty.getDouble(0.0));
     //SmartDashboard.putNumber("Ts", ts.getDouble(0.0));
