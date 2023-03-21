@@ -19,12 +19,9 @@ public class Arm extends SubsystemBase {
   private RelativeEncoder enc_arm = arm.getEncoder(); 
   private SparkMaxPIDController pidController = arm.getPIDController();
   public SparkMaxLimitSwitch limit_for = arm.getForwardLimitSwitch(Type.kNormallyClosed);
-  private ArmFeedforward arm_feedforward = new ArmFeedforward(0, 0.06, 1.8, 0);
   public Arm() {
     arm.setIdleMode(IdleMode.kBrake);
     limit_for.enableLimitSwitch(true);
-    //arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
-    //arm.setSoftLimit(SoftLimitDirection.kForward, 0);
     arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
     arm.setSoftLimit(SoftLimitDirection.kReverse, -180);
     ResetEncoder();

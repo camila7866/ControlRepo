@@ -37,13 +37,13 @@ public class TeleopDrive extends CommandBase {
       power_x = x_left;
       power_y = y_left;
     }
-    if (power_x >= -0.2 && power_x <= 0.2){
+    if (power_x >= -0.1 && power_x <= 0.1){
       power_x = 0;
     }
-    if (power_y >= -0.2 && power_y <= 0.2){
+    if (power_y >= -0.1 && power_y <= 0.1){
       power_y = 0;
     }
-    if (power_twist >= -0.2 && power_twist <= 0.2){
+    if (power_twist >= -0.1 && power_twist <= 0.1){
       power_twist = 0;
     }
     m_Drive.dDer.set(ControlMode.PercentOutput, power_y - power_x - power_twist);

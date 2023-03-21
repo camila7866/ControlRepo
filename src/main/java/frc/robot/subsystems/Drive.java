@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.util.Units;
@@ -46,25 +47,24 @@ public class Drive extends SubsystemBase {
   }
 
   public void configMastersForPosition(double max_vel, double max_accel){
-    dIzq.configFactoryDefault();
-    dIzq.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    dIzq.configNeutralDeadband(0.001);
-    dIzq.setSensorPhase(false);
-    dIzq.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
-    dIzq.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
-    dIzq.configNominalOutputForward(0);
-		dIzq.configNominalOutputReverse(0);
-		dIzq.configPeakOutputForward(1);
-		dIzq.configPeakOutputReverse(-1);
-    dIzq.selectProfileSlot(0, 0);
-    dIzq.config_kF(0, 0.2);
-		dIzq.config_kP(0, 0.2);
-		dIzq.config_kI(0, 0);
-	  dIzq.config_kD(0, 0);
-    dIzq.configMotionCruiseVelocity(max_vel);
-    dIzq.configMotionAcceleration(max_accel);
+    tIzq.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    tIzq.configNeutralDeadband(0.001);
+    tIzq.setSensorPhase(false);
+    tIzq.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
+    tIzq.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
+    tIzq.configNominalOutputForward(0);
+		tIzq.configNominalOutputReverse(0);
+		tIzq.configPeakOutputForward(1);
+		tIzq.configPeakOutputReverse(-1);
+    tIzq.selectProfileSlot(0, 0);
+    tIzq.config_kF(0, 0.2);
+		tIzq.config_kP(0, 0.2);
+		tIzq.config_kI(0, 0);
+	  tIzq.config_kD(0, 0);
+    tIzq.configMotionCruiseVelocity(max_vel);
+    tIzq.configMotionAcceleration(max_accel);
     //dIzq.configAllowableClosedloopError(0, 100);
-
+    /*
     dDer.configFactoryDefault();
     dDer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     dDer.configNeutralDeadband(0.001);
@@ -82,17 +82,24 @@ public class Drive extends SubsystemBase {
 	  dDer.config_kD(0, 0);
     dDer.configMotionCruiseVelocity(max_vel);
     dDer.configMotionAcceleration(max_accel);
+    */
     //dDer.configAllowableClosedloopError(0, 100);
   }
 
   public void RunToPosition (double PosDer, double PosIzq){
-		dIzq.set(TalonFXControlMode.MotionMagic, PosIzq);
-    dDer.set(TalonFXControlMode.MotionMagic, PosDer);
+		tIzq.set(TalonFXControlMode.MotionMagic, PosIzq);
+    //dDer.set(TalonFXControlMode.MotionMagic, PosDer);
   }
 
   public void ResetEncoders(){
     dDer.setSelectedSensorPosition(0);
     dIzq.setSelectedSensorPosition(0);
+  }
+
+  public void followOnlyOneMaster (){
+    dDer.follow(tIzq);
+    tDer.follow(tIzq);
+    dIzq.follow(tIzq);
   }
 
   public void followMotorInFront () {

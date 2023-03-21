@@ -40,19 +40,6 @@ public class ElevatorCommand extends CommandBase {
   public void end(boolean interrupted) {
     m_Elevator.ElevatorPower(0);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
   
   @Override
   public boolean isFinished() {

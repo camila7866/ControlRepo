@@ -15,7 +15,7 @@ public class PosArmSingle extends CommandBase {
 
   @Override
   public void initialize() {
-    m_Arm.ConfigForPosition(10000, 10000);
+    m_Arm.ConfigForPosition(1200, 4800);
     if (!Intake.latch){
       posicion = -16;
     }

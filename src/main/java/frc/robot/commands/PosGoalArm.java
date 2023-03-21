@@ -18,7 +18,7 @@ public class PosGoalArm extends CommandBase {
   @Override
   public void initialize() {
     flag = false;
-    m_Arm.ConfigForPosition(40000, 40000);
+    m_Arm.ConfigForPosition(1200, 4800);
     if (Intake.latch){
       if (m_level == 0){
         posicion = -130;

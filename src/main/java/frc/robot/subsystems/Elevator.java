@@ -19,11 +19,8 @@ public class Elevator extends SubsystemBase {
   public Elevator() {
     elevator.setIdleMode(IdleMode.kBrake);
     limit_rev.enableLimitSwitch(true);
-    //elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
-    //elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     elevator.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
     elevator.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 103);
-    enc_elevator.setPosition(0);
   }
 
   @Override
@@ -41,7 +38,7 @@ public class Elevator extends SubsystemBase {
   }
   
   public void ElevatorPosition (double position){
-    pidController.setReference(position, CANSparkMax.ControlType.kSmartMotion);
+    pidController.setReference(position, CANSparkMax.ControlType.kPosition);
   }
   
   public void ResetEncoder(){
@@ -49,21 +46,17 @@ public class Elevator extends SubsystemBase {
   }
   
   public void ConfigForPosition(){
-    pidController.setP(0.00005);
-    pidController.setI(0.000001);
-    pidController.setD(0);
+    pidController.setP(0.02);
+    pidController.setI(0.0001);
+    pidController.setD(0.2);
     pidController.setIZone(0);
-    pidController.setFF(0.000156);
+    pidController.setFF(0);
     pidController.setOutputRange(-1, 1);
-    pidController.setSmartMotionMaxVelocity(15000, 0);
-    pidController.setSmartMotionMinOutputVelocity(0, 0);
-    pidController.setSmartMotionMaxAccel(7500, 0);
-    pidController.setSmartMotionAllowedClosedLoopError(2, 0);
   }
   
   public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 2){
+    if (Math.abs(pos_goal - enc_elevator.getPosition()) <= 1){
       value = true;
     }
     return (value);

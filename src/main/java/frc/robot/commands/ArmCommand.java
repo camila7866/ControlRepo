@@ -17,7 +17,9 @@ public class ArmCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    m_Arm.ConfigForPosition(40000, 40000); 
+    if (!m_isManual){
+      m_Arm.ConfigForPosition(1200, 4800); 
+    }
   }
 
   @Override

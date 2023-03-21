@@ -23,7 +23,7 @@ public class AutoMotionMagic extends CommandBase {
   public void initialize() {
     flag = false;
     m_Drive.configMastersForPosition(m_max_vel, m_max_accel);
-    m_Drive.followMotorInFront();
+    m_Drive.followOnlyOneMaster();
     m_Drive.ResetEncoders();
     first_zero = true;
   }
