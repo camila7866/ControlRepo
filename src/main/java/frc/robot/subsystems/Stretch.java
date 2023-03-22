@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.AHRSProtocol.TuningVar;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
@@ -19,8 +20,8 @@ public class Stretch extends SubsystemBase {
   public Stretch() {
     stretch.setIdleMode(IdleMode.kBrake);
     limit_for.enableLimitSwitch(true);
-    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,false);
-    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0 );
+    stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+    //stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 0);
     stretch.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
     stretch.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -500);
     ResetEncoder();

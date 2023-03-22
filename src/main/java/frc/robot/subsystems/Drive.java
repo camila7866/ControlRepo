@@ -37,9 +37,9 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("dDer position: ", dDer.getSelectedSensorPosition());
-    SmartDashboard.putNumber("dIzq position: ", dIzq.getSelectedSensorPosition());
+    SmartDashboard.putNumber("tIzq position: ", tIzq.getSelectedSensorPosition());
     SmartDashboard.putNumber("Dder Volt", dDer.getMotorOutputPercent());
-    SmartDashboard.putNumber("DIzq Volt", dIzq.getMotorOutputPercent());
+    SmartDashboard.putNumber("tIzq Volt", tIzq.getMotorOutputPercent());
     SmartDashboard.putNumber("Yaw: ", getBotHeadingDegrees());
     SmartDashboard.putNumber("Pitch: ", navx.getPitch());
     SmartDashboard.putNumber("ZeroPitch", zero_pitch);
@@ -93,6 +93,8 @@ public class Drive extends SubsystemBase {
   public void ResetEncoders(){
     dDer.setSelectedSensorPosition(0);
     dIzq.setSelectedSensorPosition(0);
+    tDer.setSelectedSensorPosition(0);
+    tIzq.setSelectedSensorPosition(0);
   }
 
   public void followOnlyOneMaster (){
@@ -132,7 +134,7 @@ public class Drive extends SubsystemBase {
   public boolean MastersInZero (){
     boolean value = false;
 
-    if (Math.abs(dDer.getMotorOutputVoltage()) == 0 || Math.abs(dIzq.getMotorOutputVoltage()) == 0){
+    if (Math.abs(tIzq.getMotorOutputVoltage()) == 0 || Math.abs(tIzq.getMotorOutputVoltage()) == 0){
       value = true;
     }
     return (value);

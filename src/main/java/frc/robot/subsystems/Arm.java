@@ -22,7 +22,9 @@ public class Arm extends SubsystemBase {
     arm.setIdleMode(IdleMode.kBrake);
     limit_for.enableLimitSwitch(true);
     arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
-    arm.setSoftLimit(SoftLimitDirection.kReverse, -180);
+    arm.setSoftLimit(SoftLimitDirection.kReverse, -100);
+    arm.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, false);
+    //arm.setSoftLimit(SoftLimitDirection.kReverse, 0);
     ResetEncoder();
   }
 
@@ -61,7 +63,7 @@ public class Arm extends SubsystemBase {
     pidController.setSmartMotionMaxVelocity(max_vel, 0);
     pidController.setSmartMotionMinOutputVelocity(0, 0);
     pidController.setSmartMotionMaxAccel(max_accel, 0);
-    pidController.setSmartMotionAllowedClosedLoopError(2, 0);
+    pidController.setSmartMotionAllowedClosedLoopError(2, 0); 
   }
   
   public boolean IsStopped (double pos_goal){
