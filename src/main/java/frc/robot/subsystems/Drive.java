@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,7 @@ public class Drive extends SubsystemBase {
   public static AHRS navx = new AHRS();
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
   public double zero_pitch = 0;
+  private PIDController AutoDrivePID = new PIDController(.01, 0, 0);
 
   public Drive() {
     dDer.setNeutralMode(NeutralMode.Brake);
@@ -38,8 +40,8 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("dDer position: ", dDer.getSelectedSensorPosition());
     SmartDashboard.putNumber("tIzq position: ", tIzq.getSelectedSensorPosition());
-    SmartDashboard.putNumber("Dder Volt", dDer.getMotorOutputPercent());
-    SmartDashboard.putNumber("tIzq Volt", tIzq.getMotorOutputPercent());
+    SmartDashboard.putNumber("Dder Volt", dDer.getMotorOutputVoltage());
+    SmartDashboard.putNumber("tIzq Volt", tIzq.getMotorOutputVoltage());
     SmartDashboard.putNumber("Yaw: ", getBotHeadingDegrees());
     SmartDashboard.putNumber("Pitch: ", navx.getPitch());
     SmartDashboard.putNumber("ZeroPitch", zero_pitch);
@@ -62,32 +64,11 @@ public class Drive extends SubsystemBase {
 	  tIzq.config_kD(0, 0);
     tIzq.configMotionCruiseVelocity(max_vel);
     tIzq.configMotionAcceleration(max_accel);
-    //dIzq.configAllowableClosedloopError(0, 100);
-    /*
-    dDer.configFactoryDefault();
-    dDer.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    dDer.configNeutralDeadband(0.001);
-    dDer.setSensorPhase(false);
-    dDer.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
-    dDer.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
-    dDer.configNominalOutputForward(0);
-		dDer.configNominalOutputReverse(0);
-		dDer.configPeakOutputForward(1);
-		dDer.configPeakOutputReverse(-1); 
-    dDer.selectProfileSlot(0, 0);
-    dDer.config_kF(0, 0.2);
-		dDer.config_kP(0, 0.2);
-		dDer.config_kI(0, 0);
-	  dDer.config_kD(0, 0);
-    dDer.configMotionCruiseVelocity(max_vel);
-    dDer.configMotionAcceleration(max_accel);
-    */
-    //dDer.configAllowableClosedloopError(0, 100);
+    tIzq.configAllowableClosedloopError(0, 10);
   }
 
-  public void RunToPosition (double PosDer, double PosIzq){
+  public void RunToPosition (double PosIzq){
 		tIzq.set(TalonFXControlMode.MotionMagic, PosIzq);
-    //dDer.set(TalonFXControlMode.MotionMagic, PosDer);
   }
 
   public void ResetEncoders(){
@@ -113,6 +94,10 @@ public class Drive extends SubsystemBase {
     tDer.follow(dIzq);
   }
 
+  public void setToMaster (double vel){
+    tIzq.set(ControlMode.PercentOutput, vel);
+  }
+
   public void setToMasters (double v_dIzq, double v_dDer) {
     dIzq.set(ControlMode.PercentOutput, v_dIzq);
     dDer.set(ControlMode.PercentOutput, v_dDer);
@@ -131,10 +116,9 @@ public class Drive extends SubsystemBase {
     return (navx.getPitch());
   }
 
-  public boolean MastersInZero (){
+  public boolean motionIsFinished (double target){
     boolean value = false;
-
-    if (Math.abs(tIzq.getMotorOutputVoltage()) == 0 || Math.abs(tIzq.getMotorOutputVoltage()) == 0){
+    if (Math.abs(target) - Math.abs(tIzq.getSelectedSensorPosition()) <= 10){
       value = true;
     }
     return (value);
@@ -154,6 +138,32 @@ public class Drive extends SubsystemBase {
 
   public double getZeroPitch (){
     return (zero_pitch);
+  }
+
+  public void DriveFB(double y){
+    if(y >= -0.1 && y <= 0.1){
+      dDer.set(ControlMode.PercentOutput,0);
+      dIzq.set(ControlMode.PercentOutput, 0);
+      tDer.set(ControlMode.PercentOutput, 0);
+      tIzq.set(ControlMode.PercentOutput, 0);
+    }
+    dDer.set(ControlMode.PercentOutput, y);
+    dIzq.set(ControlMode.PercentOutput, y);
+    tDer.set(ControlMode.PercentOutput, y);
+    tIzq.set(ControlMode.PercentOutput, y);
+  }
+
+  public void DriveL(double l){
+    if(l >= -0.1 && l <= 0.1){
+      dDer.set(ControlMode.PercentOutput,0);
+      dIzq.set(ControlMode.PercentOutput, 0);
+      tDer.set(ControlMode.PercentOutput, 0);
+      tIzq.set(ControlMode.PercentOutput, 0);
+    }
+    dDer.set(ControlMode.PercentOutput, -l);
+    dIzq.set(ControlMode.PercentOutput,  l);
+    tDer.set(ControlMode.PercentOutput,  l);
+    tIzq.set(ControlMode.PercentOutput, -l);
   }
 
   @Override

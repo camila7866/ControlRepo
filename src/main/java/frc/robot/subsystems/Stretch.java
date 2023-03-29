@@ -16,7 +16,7 @@ public class Stretch extends SubsystemBase {
   public CANSparkMax stretch = new CANSparkMax(4, MotorType.kBrushless);
   private RelativeEncoder enc_stretch = stretch.getEncoder();
   private SparkMaxPIDController pidController = stretch.getPIDController();
-  public SparkMaxLimitSwitch limit_for = stretch.getForwardLimitSwitch(Type.kNormallyClosed);
+  public SparkMaxLimitSwitch limit_for = stretch.getForwardLimitSwitch(Type.kNormallyOpen);
   public Stretch() {
     stretch.setIdleMode(IdleMode.kBrake);
     limit_for.enableLimitSwitch(true);
@@ -59,7 +59,7 @@ public class Stretch extends SubsystemBase {
   
   public boolean IsStopped (double pos_goal){
     boolean value =  false;
-    if (Math.abs(pos_goal - enc_stretch.getPosition()) <= 3){
+    if (Math.abs(pos_goal - enc_stretch.getPosition()) <= 2){ 
       value = true;
     }
     return (value);

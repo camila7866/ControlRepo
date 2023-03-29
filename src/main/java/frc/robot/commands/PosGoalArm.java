@@ -18,25 +18,25 @@ public class PosGoalArm extends CommandBase {
   @Override
   public void initialize() {
     flag = false;
-    m_Arm.ConfigForPosition(1200, 4800);
+    m_Arm.ConfigForPosition(40000, 40000);
     if (Intake.latch){
       if (m_level == 0){
-        posicion = -66;
+        posicion = -68;
       } else if (m_level == 1){
-        posicion = -54;
+        posicion = -63;
       }
       else {
-        posicion = -89;
+        posicion = -46;
       }
     }
     else {
       if (m_level == 0){
-        posicion = -70;
+        posicion = -45;
       } else if (m_level == 1){
         posicion = -40;
       }
       else {
-        posicion = -55;
+        posicion = -26;
       }
     }
   }

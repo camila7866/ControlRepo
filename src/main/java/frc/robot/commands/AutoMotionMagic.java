@@ -7,7 +7,7 @@ import frc.robot.subsystems.Drive;
 
 public class AutoMotionMagic extends CommandBase {
   private final Drive m_Drive;
-  private boolean flag, first_zero;
+  private boolean flag;
   private double m_goal, m_max_vel, m_max_accel;
   public AutoMotionMagic (Drive drive, double goal, double max_vel, double max_accel) {
     m_Drive = drive;
@@ -25,29 +25,19 @@ public class AutoMotionMagic extends CommandBase {
     m_Drive.configMastersForPosition(m_max_vel, m_max_accel);
     m_Drive.followOnlyOneMaster();
     m_Drive.ResetEncoders();
-    first_zero = true;
   }
 
   @Override
   public void execute() {
-    if (first_zero){
-      if (!m_Drive.MastersInZero()){
-        first_zero = false;
-      }
-    }
-    else {
-      if (m_Drive.MastersInZero()){
-        flag = true;
-      }
-    }
-    m_Drive.RunToPosition(m_goal, m_goal);
+    m_Drive.RunToPosition(m_goal);
+    flag = m_Drive.motionIsFinished(m_goal);
     SmartDashboard.putNumber("AutoMotionGoal", m_goal);
     SmartDashboard.putBoolean("AutoMotionMagicIsFinished", flag);
-    SmartDashboard.putBoolean("MasterInzero", m_Drive.MastersInZero());
   }
 
   @Override
   public void end(boolean interrupted) {
+    m_Drive.setToMaster(0);
   }
 
   @Override

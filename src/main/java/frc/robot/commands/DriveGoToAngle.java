@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
@@ -23,6 +24,7 @@ public class DriveGoToAngle extends CommandBase {
 
   @Override
   public void execute() {
+    SmartDashboard.putBoolean("CommandAngleIsActive", pidController.atSetpoint());
     double out = pidController.calculate(m_Drive.getBotHeadingDegrees());
     m_Drive.setToMasters(out, -out);
   }

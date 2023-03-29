@@ -21,7 +21,7 @@ public class PosGoalStretch extends CommandBase {
     m_Stretch.ConfigForPosition();
     if (Intake.latch){
       if (m_level == 0){
-        posicion = -25;
+        posicion = 0;
       } else if (m_level == 1){
         posicion = -120;
         
@@ -37,7 +37,7 @@ public class PosGoalStretch extends CommandBase {
         posicion = -160;
       }
       else {
-        posicion = -500;
+        posicion = -503;
       }
     }
   }

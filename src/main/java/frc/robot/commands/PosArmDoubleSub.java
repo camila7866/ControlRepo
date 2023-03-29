@@ -2,30 +2,37 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Intake;
 
-public class RestartArm extends CommandBase {
+public class PosArmDoubleSub extends CommandBase {
   private final Arm m_Arm;
+  private double posicion;
   private boolean flag;
-  public RestartArm(Arm _Arm) {
-    m_Arm = _Arm;
+  public PosArmDoubleSub(Arm _Arm) {
+    m_Arm = _Arm; 
     addRequirements(m_Arm);
   }
 
   @Override
   public void initialize() {
-    flag = false;
+    m_Arm.ConfigForPosition(40000, 40000);
+    if (!Intake.latch){
+      posicion = -13;
+    }
+    else {
+      posicion = -60;
+    }
   }
 
   @Override
   public void execute() {
-    m_Arm.ArmPower(0.9);
-    flag = m_Arm.limit_for.isPressed();
+    flag = m_Arm.IsStopped(posicion);
+    m_Arm.ArmPosition(posicion);
   }
 
   @Override
   public void end(boolean interrupted) {
     m_Arm.ArmPower(0);
-    m_Arm.ResetEncoder();
   }
 
   @Override
